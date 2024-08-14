@@ -7,18 +7,18 @@
 namespace Fc.CodeFlix.Catalog.Domain.Entity;
 
 using Exceptions;
+using SeedWork;
+using Validation;
 
-public class Category
+public class Category : AggregateRoot
 {
-    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Category(string name, string description, bool isActive = true)
+    public Category(string name, string description, bool isActive = true) : base()
     {
-        this.Id = Guid.NewGuid();
         this.Name = name;
         this.Description = description;
         this.IsActive = true;
@@ -50,29 +50,16 @@ public class Category
 
     private void Validate()
     {
-        if (string.IsNullOrWhiteSpace(this.Name))
-        {
-            throw new EntityValidationException($"{nameof(this.Name)} should not be empty or null");
-        }
 
-        if (this.Description is null)
-        {
-            throw new EntityValidationException($"{nameof(this.Description)} should not be empty or null");
-        }
+        DomainValidation.NotNullOrEmpty(this.Name, nameof(Name));
 
-        if(this.Name.Length<3)
-        {
-            throw new EntityValidationException($"{nameof(this.Name)} should have at least 3 characters");
-        }
+        DomainValidation.MinLength(this.Name, 3, nameof(Name));
 
-        if(this.Name.Length>255)
-        {
-            throw new EntityValidationException($"{nameof(this.Name)} should have less than 255 characters");
-        }
+        DomainValidation.MaxLength(this.Name, 255, nameof(Name));
 
-        if(this.Description.Length>10_000)
-        {
-            throw new EntityValidationException($"{nameof(this.Description)} should have less than 10.000 characters");
-        }
+        DomainValidation.NotNull(this.Description, nameof(Description));
+
+        DomainValidation.MaxLength(this.Description, 10_000, nameof(Description));
+
     }
 }
