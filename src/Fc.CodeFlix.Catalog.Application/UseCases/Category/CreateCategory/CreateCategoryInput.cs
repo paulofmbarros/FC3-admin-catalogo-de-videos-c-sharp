@@ -6,4 +6,4 @@
 
 namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 
-public record CreateCategoryInput(string Name, string? Description, bool IsActive);
+public record CreateCategoryInput(string Name, string? Description, bool? IsActive);
