@@ -4,11 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
 
-using Common;
-using MediatR;
+using FluentValidation;
 
-public interface ICreateCategory : IRequestHandler<CreateCategoryInput, CategoryModelOutput>
+public class GetCategoryInputValidator : AbstractValidator<GetCategoryInput>
 {
+    public GetCategoryInputValidator()
+    {
+        this.RuleFor(x => x.Id)
+            .NotEmpty()
+            .WithMessage("Id is required");
+    }
 }

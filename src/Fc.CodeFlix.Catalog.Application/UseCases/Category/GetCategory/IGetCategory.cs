@@ -4,11 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
 
 using Common;
 using MediatR;
 
-public interface ICreateCategory : IRequestHandler<CreateCategoryInput, CategoryModelOutput>
+public interface IGetCategory : IRequestHandler<GetCategoryInput,CategoryModelOutput>
 {
+    
 }

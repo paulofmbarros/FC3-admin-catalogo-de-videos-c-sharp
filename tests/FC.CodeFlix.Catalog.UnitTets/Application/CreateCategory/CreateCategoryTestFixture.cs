@@ -9,6 +9,7 @@ namespace FC.CodeFlix.Catalog.UnitTets.Application.CreateCategory;
 using Domain.Common;
 using Fc.CodeFlix.Catalog.Application.Interfaces;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Repository;
 using Moq;
 
@@ -45,6 +46,12 @@ public class CreateCategoryTestFixture : BaseFixture
         }
 
         return categoryDescription;
+    }
+
+    public Category GetValidCategory()
+    {
+        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription());
+        return category;
     }
 
     public CreateCategoryInput GetInvalidInputLongDescription()
@@ -90,8 +97,8 @@ public class CreateCategoryTestFixture : BaseFixture
 
     public CreateCategoryInput GetInput() => new (this.GetValidCategoryName(), this.GetValidCategoryDescription(), this.GetRandomBoolean());
 
-    public Mock<ICategoryRepository> GetRepositoryMock => new();
+    public Mock<ICategoryRepository> GetRepositoryMock() => new();
 
-    public Mock<IUnitOfWork> GetUnitOfWorkMock => new();
+    public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
 
 }

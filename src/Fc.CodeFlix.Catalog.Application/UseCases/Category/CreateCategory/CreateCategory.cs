@@ -6,6 +6,7 @@
 
 namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 
+using Common;
 using Domain.Entity;
 using Domain.Repository;
 using Interfaces;
@@ -21,7 +22,7 @@ public class CreateCategory : ICreateCategory
         this.categoryRepository = categoryRepository;
     }
 
-    public async Task<CreateCategoryOutput> Handle(CreateCategoryInput input, CancellationToken cancellationToken)
+    public async Task<CategoryModelOutput> Handle(CreateCategoryInput input, CancellationToken cancellationToken)
     {
         var category = new Category(input.Name, input.Description, input.IsActive);
 
@@ -29,7 +30,6 @@ public class CreateCategory : ICreateCategory
 
         await this.unitOfWork.Commit(cancellationToken);
 
-        return new CreateCategoryOutput(category.Id, category.Name, category.Description, category.IsActive,
-            category.CreatedAt);
+        return CategoryModelOutput.FromCategory(category);
     }
 }

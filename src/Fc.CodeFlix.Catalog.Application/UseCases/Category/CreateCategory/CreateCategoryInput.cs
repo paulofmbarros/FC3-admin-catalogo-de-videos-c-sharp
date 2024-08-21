@@ -6,4 +6,7 @@
 
 namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 
-public record CreateCategoryInput(string Name, string? Description, bool? IsActive);
+using Common;
+using MediatR;
+
+public record CreateCategoryInput(string Name, string? Description, bool? IsActive) : IRequest<CategoryModelOutput>;

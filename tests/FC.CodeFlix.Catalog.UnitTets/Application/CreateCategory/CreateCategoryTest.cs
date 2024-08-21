@@ -23,8 +23,8 @@ public class CreateCategoryTest
     [Trait("Application", "CreateCategory - Use Case ")]
     public async void CreateCategory()
     {
-        var repositoryMock = this.fixture.GetRepositoryMock;
-        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock;
+        var repositoryMock = this.fixture.GetRepositoryMock();
+        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
 
         var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 
@@ -46,8 +46,8 @@ public class CreateCategoryTest
     [Trait("Application", "CreateCategory - Use Case ")]
     public async void CreateCategoryWithOnlyName()
     {
-        var repositoryMock = this.fixture.GetRepositoryMock;
-        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock;
+        var repositoryMock = this.fixture.GetRepositoryMock();
+        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
 
         var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 
@@ -69,8 +69,8 @@ public class CreateCategoryTest
     [Trait("Application", "CreateCategory - Use Case ")]
     public async void CreateCategoryWithOnlyNameAndDescription()
     {
-        var repositoryMock = this.fixture.GetRepositoryMock;
-        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock;
+        var repositoryMock = this.fixture.GetRepositoryMock();
+        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
 
         var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 
@@ -96,8 +96,8 @@ public class CreateCategoryTest
         MemberType = typeof(CreateCategoryTestDataGenerator))]
     public async void ThrowWhenCantInstantiateCategory(UseCases.CreateCategoryInput input, string exceptionMessage)
     {
-        var repositoryMock = this.fixture.GetRepositoryMock;
-        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock;
+        var repositoryMock = this.fixture.GetRepositoryMock();
+        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
 
         var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 

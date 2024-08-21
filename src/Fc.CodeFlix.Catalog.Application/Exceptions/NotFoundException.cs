@@ -4,11 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+namespace Fc.CodeFlix.Catalog.Application.Exceptions;
 
-using Common;
-using MediatR;
-
-public interface ICreateCategory : IRequestHandler<CreateCategoryInput, CategoryModelOutput>
+public class NotFoundException : ApplicationException
 {
+    public NotFoundException(string? message) : base(message)
+    {
+    }
 }
