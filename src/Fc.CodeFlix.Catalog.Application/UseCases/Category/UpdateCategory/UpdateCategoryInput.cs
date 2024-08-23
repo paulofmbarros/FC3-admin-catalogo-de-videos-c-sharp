@@ -4,12 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 
-using Entity;
-using SeedWork;
+using Common;
+using MediatR;
 
-public interface ICategoryRepository : IGenericRepository<Category>
-{
-
-}
+public record UpdateCategoryInput(
+    Guid Id,
+    string Name,
+    string? Description = null,
+    bool? IsActive = null) : IRequest<CategoryModelOutput>;

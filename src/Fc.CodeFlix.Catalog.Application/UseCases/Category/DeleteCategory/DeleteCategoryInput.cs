@@ -4,12 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
 
-using Entity;
-using SeedWork;
+using MediatR;
 
-public interface ICategoryRepository : IGenericRepository<Category>
+public class DeleteCategoryInput : IRequest<Unit>
 {
+    public DeleteCategoryInput(Guid id)
+    {
+        this.Id = id;
+    }
 
+    public Guid Id { get; set; }
 }

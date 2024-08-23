@@ -30,4 +30,22 @@ public class GetCategoryInputValidationTest
         result.IsValid.Should().BeTrue();
         result.Errors.Should().BeEmpty();
     }
+
+    [Fact(DisplayName = nameof(InvalidWhenEmptyGuidId))]
+    [Trait("Application ", "GetCategory - Use Cases")]
+    public void InvalidWhenEmptyGuidId()
+    {
+        // Arrange
+        var input = new GetCategoryInput(Guid.Empty);
+        var validator = new GetCategoryInputValidator();
+        // Act
+        var result = validator.Validate(input);
+        // Assert
+        result.Should().NotBeNull();
+        result.IsValid.Should().BeFalse();
+        result.Errors.Should().HaveCount(1);
+        result.Errors[0].ErrorMessage.Should().Be("Id is required");
+    }
+
+
 }
