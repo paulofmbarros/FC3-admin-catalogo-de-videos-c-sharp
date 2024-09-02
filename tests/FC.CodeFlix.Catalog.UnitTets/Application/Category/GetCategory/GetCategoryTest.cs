@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.GetCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.GetCategory;
 
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
@@ -27,7 +27,7 @@ public class GetCategoryTest
     {
         // Arrange
         var repositoryMock = this.fixture.GetRepositoryMock();
-        var exampleCategory = this.fixture.GetValidCategory();
+        var exampleCategory = this.fixture.GetExampleCategory();
         repositoryMock.Setup(x=>x.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleCategory);
         var input = new GetCategoryInput(exampleCategory.Id);

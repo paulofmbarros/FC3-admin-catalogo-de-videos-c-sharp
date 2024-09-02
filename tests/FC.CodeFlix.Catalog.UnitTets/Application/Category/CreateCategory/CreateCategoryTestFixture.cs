@@ -4,14 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.CreateCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.CreateCategory;
 
-using Domain.Common;
-using Fc.CodeFlix.Catalog.Application.Interfaces;
+using Common;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using Fc.CodeFlix.Catalog.Domain.Entity;
-using Fc.CodeFlix.Catalog.Domain.Repository;
-using Moq;
 
 [CollectionDefinition(nameof(CreateCategoryTestFixture))]
 public class CreateCategoryTestFixtureCollection : ICollectionFixture<CreateCategoryTestFixture>
@@ -19,40 +16,9 @@ public class CreateCategoryTestFixtureCollection : ICollectionFixture<CreateCate
 }
 
 
-public class CreateCategoryTestFixture : BaseFixture
+public class CreateCategoryTestFixture : CategoryUseCasesBaseFixture
 {
-    public string GetValidCategoryName()
-    {
-        var categoryName = "";
-        while (categoryName.Length < 3)
-        {
-            categoryName = Faker.Commerce.Categories(1)[0];
-        }
-
-        if (categoryName.Length > 255)
-        {
-            categoryName = categoryName.Substring(0, 255);
-        }
-
-        return categoryName;
-    }
-
-    public string GetValidCategoryDescription()
-    {
-        var categoryDescription = Faker.Commerce.ProductDescription();
-        if (categoryDescription.Length > 10_000)
-        {
-            categoryDescription = categoryDescription.Substring(0, 10000);
-        }
-
-        return categoryDescription;
-    }
-
-    public Category GetValidCategory()
-    {
-        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription());
-        return category;
-    }
+    public CreateCategoryInput GetInput() => new (this.GetValidCategoryName(), this.GetValidCategoryDescription(), this.GetRandomBoolean());
 
     public CreateCategoryInput GetInvalidInputLongDescription()
     {
@@ -92,13 +58,12 @@ public class CreateCategoryTestFixture : BaseFixture
         return invalidInputNullName;
     }
 
+    public Category GetValidCategory()
+    {
+        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription());
+        return category;
+    }
 
-    public bool GetRandomBoolean() => Faker.Random.Bool();
 
-    public CreateCategoryInput GetInput() => new (this.GetValidCategoryName(), this.GetValidCategoryDescription(), this.GetRandomBoolean());
-
-    public Mock<ICategoryRepository> GetRepositoryMock() => new();
-
-    public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
 
 }

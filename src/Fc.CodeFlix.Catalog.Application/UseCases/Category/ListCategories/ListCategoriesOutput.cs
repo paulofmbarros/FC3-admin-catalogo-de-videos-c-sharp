@@ -4,18 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Common;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
 
-using Bogus;
+using Application.Common;
+using Common;
 
-public abstract class BaseFixture
+public class ListCategoriesOutput : PaginatedListOutput<CategoryModelOutput>
 {
-
-    public Faker Faker { get; set; }
-
-
-    protected BaseFixture()
+    public ListCategoriesOutput(int page,
+        int perPage,
+        int total,
+        IReadOnlyList<CategoryModelOutput> items) : base(page, perPage, total, items)
     {
-        this.Faker = new Faker("pt_BR");
     }
 }

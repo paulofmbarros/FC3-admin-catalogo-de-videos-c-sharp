@@ -4,13 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.GetCategory;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using Common;
 
-public interface ICategoryRepository : IGenericRepository<Category>, ISearchableRepository<Category>
+[CollectionDefinition(nameof(GetCategoryTestFixture))]
+public class GetCategoryTestFixtureCollection : ICollectionFixture<GetCategoryTestFixture>
+{
+
+}
+
+public class GetCategoryTestFixture : CategoryUseCasesBaseFixture
 {
 
 }

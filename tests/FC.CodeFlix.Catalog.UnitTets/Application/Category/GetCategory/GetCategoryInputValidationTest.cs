@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.GetCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.GetCategory;
 
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
 using FluentAssertions;

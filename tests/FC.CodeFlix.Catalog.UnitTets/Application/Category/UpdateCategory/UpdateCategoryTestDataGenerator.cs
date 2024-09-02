@@ -4,9 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.UpdateCategory;
-
-using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.UpdateCategory;
 
 public class UpdateCategoryTestDataGenerator
 {
@@ -15,7 +13,7 @@ public class UpdateCategoryTestDataGenerator
         var fixture = new UpdateCategoryTestFixture();
         for (int i = 0; i < times; i++)
         {
-            var exampleCategory = fixture.GetValidCategory();
+            var exampleCategory = fixture.GetExampleCategory();
             var updateCategoryInput = fixture.GenerateUpdateCategoryInput(exampleCategory.Id);
 
             yield return new object[] { exampleCategory, updateCategoryInput };

@@ -4,9 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.CreateCategory;
-
-using Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.CreateCategory;
 
 public class CreateCategoryTestDataGenerator
 {

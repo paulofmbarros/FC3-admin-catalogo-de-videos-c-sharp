@@ -4,13 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.DeleteCategory;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using Common;
 
-public interface ICategoryRepository : IGenericRepository<Category>, ISearchableRepository<Category>
+[CollectionDefinition(nameof(DeleteCategoryTestFixture))]
+public class DeleteCategoryTestFixtureCollection : ICollectionFixture<DeleteCategoryTestFixture>
 {
+}
+
+public class DeleteCategoryTestFixture : CategoryUseCasesBaseFixture
+{
+
+
 
 }

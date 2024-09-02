@@ -4,13 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
-
-public interface ICategoryRepository : IGenericRepository<Category>, ISearchableRepository<Category>
+public interface ISearchableRepository<TAggregate> where TAggregate : AggregateRoot
 {
-
+    Task<SearchOutput<TAggregate>> Search(SearchInput searchInput, CancellationToken cancellationToken);
 }

@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.UpdateCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.UpdateCategory;
 
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.Common;
@@ -12,7 +12,6 @@ using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 
 [Collection(nameof(UpdateCategoryTestFixture))]
@@ -168,7 +167,7 @@ public class UpdateCategoryTest
         // Arrange
         var repositoryMock = this.fixture.GetRepositoryMock();
         var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
-        var exampleCategory = this.fixture.GetValidCategory();
+        var exampleCategory = this.fixture.GetExampleCategory();
 
         repositoryMock
             .Setup(x => x

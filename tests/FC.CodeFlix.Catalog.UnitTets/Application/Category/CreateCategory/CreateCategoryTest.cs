@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.CreateCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.CreateCategory;
 
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Exceptions;
@@ -51,7 +51,7 @@ public class CreateCategoryTest
 
         var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 
-        var input = new UseCases.CreateCategoryInput(fixture.GetValidCategoryName(), string.Empty, null);
+        var input = new UseCases.CreateCategoryInput(this.fixture.GetValidCategoryName(), string.Empty, null);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -74,7 +74,7 @@ public class CreateCategoryTest
 
         var useCase = new UseCases.CreateCategory(unitOfWorkMock.Object, repositoryMock.Object);
 
-        var input = new UseCases.CreateCategoryInput(fixture.GetValidCategoryName(), this.fixture.GetValidCategoryDescription(), true);
+        var input = new UseCases.CreateCategoryInput(this.fixture.GetValidCategoryName(), this.fixture.GetValidCategoryDescription(), true);
 
         var output = await useCase.Handle(input, CancellationToken.None);
 

@@ -4,29 +4,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.GetCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.Common;
 
-using Domain.Common;
+using Fc.CodeFlix.Catalog.Application.Interfaces;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Repository;
 using Moq;
+using UnitTets.Common;
 
-[CollectionDefinition(nameof(GetCategoryTestFixture))]
-public class GetCategoryTestFixtureCollection : ICollectionFixture<GetCategoryTestFixture>
+public abstract class CategoryUseCasesBaseFixture : BaseFixture
 {
-
-}
-
-
-public class GetCategoryTestFixture : BaseFixture
-{
-
     public string GetValidCategoryName()
     {
         var categoryName = "";
         while (categoryName.Length < 3)
         {
-            categoryName = Faker.Commerce.Categories(1)[0];
+            categoryName = this.Faker.Commerce.Categories(1)[0];
         }
 
         if (categoryName.Length > 255)
@@ -36,10 +29,10 @@ public class GetCategoryTestFixture : BaseFixture
 
         return categoryName;
     }
-    
+
     public string GetValidCategoryDescription()
     {
-        var categoryDescription = Faker.Commerce.ProductDescription();
+        var categoryDescription = this.Faker.Commerce.ProductDescription();
         if (categoryDescription.Length > 10_000)
         {
             categoryDescription = categoryDescription.Substring(0, 10000);
@@ -48,11 +41,17 @@ public class GetCategoryTestFixture : BaseFixture
         return categoryDescription;
     }
 
-    public Category GetValidCategory()
+
+    public bool GetRandomBoolean() => this.Faker.Random.Bool();
+
+    public Category GetExampleCategory()
     {
-        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription());
+        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription(), this.GetRandomBoolean());
         return category;
     }
 
+
     public Mock<ICategoryRepository> GetRepositoryMock() => new();
+
+    public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
 }

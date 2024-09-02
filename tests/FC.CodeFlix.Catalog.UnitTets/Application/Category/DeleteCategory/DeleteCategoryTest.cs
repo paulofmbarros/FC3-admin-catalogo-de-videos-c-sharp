@@ -4,12 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Application.DeleteCategory;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Category.DeleteCategory;
 
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
-using Fc.CodeFlix.Catalog.Domain.Entity;
 using FluentAssertions;
-using MediatR;
 using Moq;
 
 [Collection(nameof(DeleteCategoryTestFixture))]
@@ -28,9 +26,9 @@ public class DeleteCategoryTest
     {
         // Arrange
 
-        var repositoryMock = fixture.GetRepositoryMock();
-        var unitOfWorkMock = fixture.GetUnitOfWorkMock();
-        var categoryExample = fixture.GetValidCategory();
+        var repositoryMock = this.fixture.GetRepositoryMock();
+        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
+        var categoryExample = this.fixture.GetExampleCategory();
 
         repositoryMock.Setup(x => x.Get(categoryExample.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(categoryExample);
@@ -55,7 +53,7 @@ public class DeleteCategoryTest
 
         var repositoryMock = this.fixture.GetRepositoryMock();
         var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
-        var categoryExample = this.fixture.GetValidCategory();
+        var categoryExample = this.fixture.GetExampleCategory();
 
         repositoryMock.Setup(x => x.Get(categoryExample.Id, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Category not found"));

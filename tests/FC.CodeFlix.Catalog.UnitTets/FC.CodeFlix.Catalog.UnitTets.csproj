@@ -28,4 +28,8 @@
       <ProjectReference Include="..\..\src\Fc.CodeFlix.Catalog.Domain\Fc.CodeFlix.Catalog.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\Category\" />
+    </ItemGroup>
+
 </Project>
