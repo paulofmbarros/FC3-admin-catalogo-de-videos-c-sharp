@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fc.CodeFlix.Catalog.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fc.CodeFlix.Catalog.Application", "src\Fc.CodeFlix.Catalog.Application\Fc.CodeFlix.Catalog.Application.csproj", "{AD66098C-DA6F-427D-88A0-51C14CC85197}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.IntegrationTests", "tests\FC.CodeFlix.Catalog.IntegrationTests\FC.CodeFlix.Catalog.IntegrationTests.csproj", "{7B1EE327-8038-43D0-A006-BF14BB53746A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.Infra.Data.EF", "src\FC.CodeFlix.Catalog.Infra.Data.EF\FC.CodeFlix.Catalog.Infra.Data.EF.csproj", "{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,8 @@ Global
 		{061A6E0B-5774-4F3E-AB4C-052BE61A3DC5} = {C2686A6D-A9BB-4B0E-87CA-499360869AB5}
 		{2B7B3A08-F6F0-46F8-9FB1-94E612BA564A} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
 		{AD66098C-DA6F-427D-88A0-51C14CC85197} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
+		{7B1EE327-8038-43D0-A006-BF14BB53746A} = {C2686A6D-A9BB-4B0E-87CA-499360869AB5}
+		{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{061A6E0B-5774-4F3E-AB4C-052BE61A3DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,5 +39,13 @@ Global
 		{AD66098C-DA6F-427D-88A0-51C14CC85197}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD66098C-DA6F-427D-88A0-51C14CC85197}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD66098C-DA6F-427D-88A0-51C14CC85197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1EE327-8038-43D0-A006-BF14BB53746A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1EE327-8038-43D0-A006-BF14BB53746A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1EE327-8038-43D0-A006-BF14BB53746A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1EE327-8038-43D0-A006-BF14BB53746A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
