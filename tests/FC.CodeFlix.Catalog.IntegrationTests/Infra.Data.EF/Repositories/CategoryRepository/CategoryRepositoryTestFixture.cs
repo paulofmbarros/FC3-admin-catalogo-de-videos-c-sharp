@@ -7,6 +7,7 @@
 namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CategoryRepository;
 
 using Base;
+using Catalog.Infra.Data.EF;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,7 +52,8 @@ public class CategoryRepositoryTestFixture : BaseFixture
 
     public Category GetExampleCategory()
     {
-        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription(), this.GetRandomBoolean());
+        var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription(),
+            this.GetRandomBoolean());
         return category;
     }
 
@@ -62,9 +64,11 @@ public class CategoryRepositoryTestFixture : BaseFixture
             .Options;
 
         var dbContext = new CodeflixCatalogDbContext(options);
-        // dbContext.Database.EnsureCreated();
-
         return dbContext;
     }
+
+    public List<Category> GetExampleCategoriesList(int length = 10)
+         => Enumerable.Range(0, length).Select(_ => this.GetExampleCategory()).ToList();
+
 
 }

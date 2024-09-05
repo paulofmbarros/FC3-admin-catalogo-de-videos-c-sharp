@@ -11,10 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\Fc.CodeFlix.Catalog.Application\Fc.CodeFlix.Catalog.Application.csproj" />
       <ProjectReference Include="..\Fc.CodeFlix.Catalog.Domain\Fc.CodeFlix.Catalog.Domain.csproj" />
     </ItemGroup>
 

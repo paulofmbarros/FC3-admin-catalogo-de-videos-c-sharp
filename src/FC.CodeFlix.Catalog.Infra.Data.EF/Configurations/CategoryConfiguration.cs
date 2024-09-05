@@ -23,5 +23,7 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(c => c.Description)
             .HasMaxLength(10_000);
 
+        builder.Property(c => c.IsActive);
+
     }
 }
