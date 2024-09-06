@@ -23,11 +23,13 @@ public class CategoryRepository : ICategoryRepository
     }
 
     public async Task Insert(Category aggregate, CancellationToken cancellationToken)
-    => await this.Categories.AddAsync(aggregate, cancellationToken);
+      => await this.Categories.AddAsync(aggregate, cancellationToken);
 
     public async Task<Category> Get(Guid id, CancellationToken cancellationToken)
     {
-        var category = await this.Categories.FindAsync(new object[] {id}, cancellationToken);
+        var category = await this.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x=>x.Id == id, cancellationToken);
 
         if (category == null)
         {
@@ -35,14 +37,26 @@ public class CategoryRepository : ICategoryRepository
         }
 
         return category!;
-
     }
 
-    public Task Delete(Category aggregate, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public Task Delete(Category aggregate, CancellationToken _)
+        => Task.FromResult(this.Categories.Remove(aggregate));
 
     public async Task Update(Category aggregate, CancellationToken cancellationToken)
          => await Task.FromResult(this.Categories.Update(aggregate));
 
 
-    public Task<SearchOutput<Category>> Search(SearchInput searchInput, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<SearchOutput<Category>> Search(SearchInput searchInput, CancellationToken cancellationToken)
+    {
+        var total = await this.Categories.CountAsync(cancellationToken);
+        var toSkip = searchInput.PerPage * (searchInput.Page - 1);
+        var items = await this.Categories
+            .AsNoTracking()
+            .Skip(toSkip)
+            .Take(searchInput.PerPage)
+            .ToListAsync(cancellationToken);
+
+
+        return new SearchOutput<Category>(searchInput.Page,searchInput.PerPage, total, items);
+    }
 }
