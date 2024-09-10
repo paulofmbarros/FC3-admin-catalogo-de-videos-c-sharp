@@ -199,9 +199,83 @@ public class CategoryRepositoryTests
         output.Should().NotBeNull();
         output.Total.Should().Be(quantityCategoriesToGenerate);
         output.Items.Should().HaveCount(expectedQuantityItems);
-        output.Items.Should().BeEquivalentTo(exampleCategoryList.Skip((page-1)*perPage).Take(perPage));
         output.CurrentPage.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
+
+    }
+
+    [Theory(DisplayName = nameof(SearchByText))]
+    [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+    [InlineData("Action",1,5,1,1)]
+    [InlineData("Horror",1,5,3,3)]
+    [InlineData("Horror",2,5,0,3)]
+    [InlineData("Sci-Fi",1,5,4,4)]
+    [InlineData("Sci-Fi",1,2,2,4)]
+    [InlineData("Sci-Fi",2,3,1,4)]
+    [InlineData("Sci-Fi other",1,3,0,0)]
+    [InlineData("Robots",1,5,2,2)]
+    public async Task SearchByText(string search ,int page, int perPage, int expectedQuantityItemsReturned, int expectedQuantityTotalItems)
+    {
+        CodeflixCatalogDbContext dbContext = this.fixture.CreateDbContext();
+        var exampleCategoryList = this.fixture.GetExampleCategoriesListWithNames(
+        [
+            "Action",
+            "Horror",
+            "Horror - Robots",
+            "Horror - Based on Real Facts",
+            "Drama",
+            "Sci-Fi IA",
+            "Sci-Fi Space",
+            "Sci-Fi Robots",
+            "Sci-Fi Future",
+        ]);
+
+        await dbContext.AddRangeAsync(exampleCategoryList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+        var categoryRepository = new CategoryRepository(dbContext);
+        var searchInput = new SearchInput(page,perPage, search,"", SearchOrder.Asc);
+
+
+        var output = await categoryRepository.Search(searchInput, CancellationToken.None);
+
+        output.Should().NotBeNull();
+        output.Total.Should().Be(expectedQuantityTotalItems);
+        output.Items.Should().HaveCount(expectedQuantityItemsReturned);
+        output.CurrentPage.Should().Be(searchInput.Page);
+        output.PerPage.Should().Be(searchInput.PerPage);
+
+    }
+
+    [Theory(DisplayName = nameof(SearchOrdered))]
+    [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+    [InlineData("name","asc")]
+    [InlineData("name","desc")]
+    [InlineData("id","desc")]
+    [InlineData("id","asc")]
+    [InlineData("createdAt","asc")]
+    [InlineData("createdAt","desc")]
+    [InlineData("createdAt","asc")]
+    public async Task SearchOrdered(string orderBy, string order)
+    {
+        CodeflixCatalogDbContext dbContext = this.fixture.CreateDbContext();
+        var exampleCategoryList = this.fixture.GetExampleCategoriesList();
+        await dbContext.AddRangeAsync(exampleCategoryList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+        var categoryRepository = new CategoryRepository(dbContext);
+        var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+        var searchInput = new SearchInput(1,20, "",orderBy, searchOrder);
+
+
+        var output = await categoryRepository.Search(searchInput, CancellationToken.None);
+        var expectedOrderedList = this.fixture.CloneCategoriesListOrdered(exampleCategoryList, orderBy, searchOrder);
+
+        output.Should().NotBeNull();
+        output.Total.Should().Be(exampleCategoryList.Count);
+        output.Items.Should().HaveCount(exampleCategoryList.Count);
+        output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
+        output.CurrentPage.Should().Be(searchInput.Page);
+        output.PerPage.Should().Be(searchInput.PerPage);
+
 
     }
 
