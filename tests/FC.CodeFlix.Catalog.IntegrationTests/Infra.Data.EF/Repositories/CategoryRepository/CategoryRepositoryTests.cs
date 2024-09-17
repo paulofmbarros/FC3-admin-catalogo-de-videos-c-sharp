@@ -164,17 +164,18 @@ public class CategoryRepositoryTests
     [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
     public async Task SearchReturnsEmptyWhenPersistenceIsEmpty()
     {
-        CodeflixCatalogDbContext dbContext = this.fixture.CreateDbContext();
+        CodeflixCatalogDbContext dbContext = this.fixture.CreateDbContext(false);
         var categoryRepository = new CategoryRepository(dbContext);
         var searchInput = new SearchInput(1,20,"","", SearchOrder.Asc);
 
         var output = await categoryRepository.Search(searchInput, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Total.Should().Be(0);
-        output.Items.Should().HaveCount(0);
+        output.Items.Should().NotBeNull();
         output.CurrentPage.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
+        output.Total.Should().Be(0);
+        output.Items.Should().HaveCount(0);
 
     }
 

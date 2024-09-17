@@ -4,11 +4,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.Interfaces;
+namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.GetCategory;
 
-public interface IUnitOfWork
+using Base;
+using Common;
+
+[CollectionDefinition(nameof(GetCategoryTestFixture))]
+public class GetCategoryTestFixtureCollection : ICollectionFixture<GetCategoryTestFixture>
 {
-    public Task Commit(CancellationToken cancellationToken);
 
-    public Task Rollback(CancellationToken cancellationToken);
+}
+
+
+public class GetCategoryTestFixture : CategoryUseCaseBaseFixture
+{
+
+
+
 }
