@@ -53,4 +53,5 @@ public class CategoryUseCaseBaseFixture : BaseFixture
         => Enumerable.Range(0, length).Select(_ => this.GetExampleCategory()).ToList();
 
 
+
 }

@@ -65,9 +65,9 @@ public class CreateCategoryTest
         unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    [Fact(DisplayName = nameof(CreateCategoryWithOnlyName))]
+    [Fact(DisplayName = nameof(CreateCategoryWithOnlyNameAndDescription))]
     [Trait("Application", "CreateCategory - Use Case ")]
-    public async void CreateCategoryWithOnlyNameAndDescription()
+    public async Task CreateCategoryWithOnlyNameAndDescription()
     {
         var repositoryMock = this.fixture.GetRepositoryMock();
         var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
