@@ -92,7 +92,7 @@ public class ListCategoriesTest
     }
 
     [Theory(DisplayName = nameof(SearchByText))]
-    [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+    [Trait("Integration/Application",  "ListCategories - UseCase")]
     [InlineData("Action",1,5,1,1)]
     [InlineData("Horror",1,5,3,3)]
     [InlineData("Horror",2,5,0,3)]
@@ -135,7 +135,7 @@ public class ListCategoriesTest
     }
 
     [Theory(DisplayName = nameof(SearchOrdered))]
-    [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+    [Trait("Integration/Application",  "ListCategories - UseCase")]
     [InlineData("name","asc")]
     [InlineData("name","desc")]
     [InlineData("id","desc")]
@@ -149,7 +149,7 @@ public class ListCategoriesTest
         await dbContext.AddRangeAsync(exampleCategoryList);
         await dbContext.SaveChangesAsync(CancellationToken.None);
         var categoryRepository = new CategoryRepository(dbContext);
-        var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+        var searchOrder = order.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? SearchOrder.Asc : SearchOrder.Desc;
         var searchInput = new ListCategoriesInput(1,20, "",orderBy, searchOrder);
 
 
