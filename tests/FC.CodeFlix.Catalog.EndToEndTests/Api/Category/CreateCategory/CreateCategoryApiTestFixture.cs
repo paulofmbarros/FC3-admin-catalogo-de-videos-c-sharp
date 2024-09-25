@@ -25,4 +25,5 @@ public class CreateCategoryApiTestFixture
             this.GetValidCategoryDescription(),
             this.GetRandomBoolean()
         );
+
 }
