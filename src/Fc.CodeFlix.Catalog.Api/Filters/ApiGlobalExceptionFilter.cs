@@ -6,6 +6,7 @@
 
 namespace Fc.CodeFlix.Catalog.Api.Filters;
 
+using Application.Exceptions;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -26,12 +27,19 @@ public class ApiGlobalExceptionFilter : IExceptionFilter
             problemDetails.Extensions.Add("StackTrace", exception.StackTrace);
         }
 
-        if (exception is EntityValidationException validationException)
+        if (exception is EntityValidationException)
         {
             problemDetails.Title = "One or more validation errors occurred.";
             problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
             problemDetails.Type = "UnprocessableEntity";
-            problemDetails.Detail = validationException.Message;
+            problemDetails.Detail = exception.Message;
+        }
+        else if (exception is NotFoundException)
+        {
+            problemDetails.Title = "Not Found";
+            problemDetails.Status = StatusCodes.Status404NotFound;
+            problemDetails.Type = "NotFound";
+            problemDetails.Detail = exception.Message;
         }
         else
         {

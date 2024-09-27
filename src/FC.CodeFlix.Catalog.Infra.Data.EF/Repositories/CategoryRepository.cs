@@ -33,7 +33,7 @@ public class CategoryRepository : ICategoryRepository
 
         if (category == null)
         {
-            NotFoundException.ThrowIfNull(category,$"Category '{id}' not found");
+            NotFoundException.ThrowIfNull(category,$"Category {id} not found.");
         }
 
         return category!;
