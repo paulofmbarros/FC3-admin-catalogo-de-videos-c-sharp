@@ -20,4 +20,10 @@ public class ListCategoriesInput : PaginatedListInput, IRequest<ListCategoriesOu
         SearchOrder direction = SearchOrder.Asc ) : base(page, perPage, search, sort, direction)
     {
     }
+
+
+    public ListCategoriesInput() : base(1,15,"", "", SearchOrder.Asc)
+    {
+
+    }
 }

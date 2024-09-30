@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 using Xunit;
 
 [Collection(nameof(CreateCategoryApiTestFixture))]
-public class CreateCategoryApiTest
+public class CreateCategoryApiTest : IDisposable
 {
     private readonly CreateCategoryApiTestFixture fixture;
 
@@ -86,4 +86,5 @@ public class CreateCategoryApiTest
         output.Detail.Should().Be(expectedDetail);
     }
 
+    public void Dispose() => this.fixture.ClearPersistence();
 }

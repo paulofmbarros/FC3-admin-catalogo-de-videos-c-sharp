@@ -68,7 +68,7 @@ public class GetCategoryTest
 
         // Assert
         await task.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"Category '{input.Id}' not found");
+            .WithMessage($"Category {input.Id} not found.");
 
     }
 

@@ -38,4 +38,11 @@ public class BaseFixture
         return context;
     }
 
+    public void ClearPersistence()
+    {
+        var context = this.CreateDbContext();
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
+    }
+
 }

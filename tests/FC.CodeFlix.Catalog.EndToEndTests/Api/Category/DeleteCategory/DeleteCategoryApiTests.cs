@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 [Collection(nameof(DeleteCategoryApiTestFixture))]
-public class DeleteCategoryApiTests
+public class DeleteCategoryApiTests : IDisposable
 {
     private readonly DeleteCategoryApiTestFixture fixture;
 
@@ -68,4 +68,6 @@ public class DeleteCategoryApiTests
 
 
     }
+
+    public void Dispose() => this.fixture.ClearPersistence();
 }
