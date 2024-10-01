@@ -9,6 +9,7 @@ namespace FC.CodeFlix.Catalog.EndToEndTests.Base;
 using System.Text;
 using System.Text.Json;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -30,12 +31,26 @@ public class ApiClient
         return (response, output);
     }
 
-    public async Task<(HttpResponseMessage?, TOutput?)> Get<TOutput>(string route) where TOutput : class
+    public async Task<(HttpResponseMessage?, TOutput?)> Get<TOutput>(string route, object? queryStringParameters = null) where TOutput : class
     {
-        var response = await this.httpClient.GetAsync(route);
+        var url = PrepareGetQueryString(route,queryStringParameters);
+        var response = await this.httpClient.GetAsync(url);
         var output = await GetOutput<TOutput>(response);
 
         return (response, output);
+    }
+
+    private string PrepareGetQueryString(string route, object? queryStringParameters)
+    {
+        if (queryStringParameters is null)
+        {
+            return route;
+        }
+
+       var parametersJson = JsonSerializer.Serialize(queryStringParameters);
+       var parametersDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(parametersJson);
+       return QueryHelpers.AddQueryString(route, parametersDictionary!);
+
     }
 
     public async Task<(HttpResponseMessage?, TOutput?)> Delete<TOutput>(string route) where TOutput : class

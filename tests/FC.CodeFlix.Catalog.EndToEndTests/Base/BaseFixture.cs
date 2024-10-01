@@ -44,5 +44,10 @@ public class BaseFixture
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
     }
+    public void Dispose()
+    {
+        WebAppFactory.Dispose();
+    }
+
 
 }

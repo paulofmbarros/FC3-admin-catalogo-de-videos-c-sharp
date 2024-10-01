@@ -12,6 +12,7 @@ using Application.UseCases.Category.DeleteCategory;
 using Application.UseCases.Category.GetCategory;
 using Application.UseCases.Category.ListCategories;
 using Application.UseCases.Category.UpdateCategory;
+using Domain.SeedWork.SearchableRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,8 +70,22 @@ public class CategoriesController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(ListCategoriesOutput), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get([FromQuery] ListCategoriesInput input, CancellationToken cancellationToken)
+    public async Task<IActionResult> Get(CancellationToken cancellationToken,
+        [FromQuery] SearchOrder? direction = null ,
+        [FromQuery] int? page = null,
+        [FromQuery] int? perPage = null,
+        [FromQuery] string? search = null,
+        [FromQuery] string? sort = null
+         )
     {
+        var input = new ListCategoriesInput();
+        if (page is not null) input.Page = page.Value;
+        if (perPage is not null) input.PerPage = perPage.Value;
+        if (!string.IsNullOrWhiteSpace(search)) input.Search = search;
+        if (!string.IsNullOrWhiteSpace(sort)) input.Sort = sort;
+        if (!string.IsNullOrWhiteSpace(sort)) input.Sort = sort;
+        if (direction is not null) input.Direction = direction.Value;
+
         var output = await this.mediator.Send(input, cancellationToken);
 
         return this.Ok(output);

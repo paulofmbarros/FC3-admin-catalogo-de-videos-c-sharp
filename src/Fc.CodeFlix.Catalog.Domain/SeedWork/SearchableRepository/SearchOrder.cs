@@ -8,6 +8,6 @@ namespace Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
 public enum SearchOrder
 {
-    Asc,
-    Desc
+    Asc = 0,
+    Desc = 1
 }
