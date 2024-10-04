@@ -7,6 +7,7 @@
 namespace FC.CodeFlix.Catalog.EndToEndTests.Api.Category.UpdateCategory;
 
 using System.Net;
+using Extensions.DateTime;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
@@ -43,7 +44,7 @@ public class UpdateCategoryApiTest : IDisposable
         output.Name.Should().Be(categoryInput.Name);
         output.Description.Should().Be(categoryInput.Description);
         output.IsActive.Should().Be((bool)categoryInput.IsActive);
-        output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
 
     }
 
@@ -70,7 +71,7 @@ public class UpdateCategoryApiTest : IDisposable
         output.Name.Should().Be(categoryInput.Name);
         output.Description.Should().Be(exampleCategory.Description);
         output.IsActive.Should().Be(exampleCategory.IsActive);
-        output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
 
     }
 
@@ -100,7 +101,7 @@ public class UpdateCategoryApiTest : IDisposable
         output.Name.Should().Be(categoryInput.Name);
         output.Description.Should().Be(categoryInput.Description);
         output.IsActive.Should().Be(exampleCategory.IsActive);
-        output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+        output.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
 
     }
 

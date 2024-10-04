@@ -73,13 +73,13 @@ public class CategoryRepositoryTestFixture : BaseFixture
         var listCloned = new List<Category>(categories);
         var orderedList = (orderBy.ToLower(), order) switch
         {
-            ("name", SearchOrder.Asc) => listCloned.OrderBy(x => x.Name),
-            ("name", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Name),
+            ("name", SearchOrder.Asc) => listCloned.OrderBy(x => x.Name).ThenBy(x=>x.Id),
+            ("name", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Name).ThenByDescending(x=>x.Id),
             ("id", SearchOrder.Asc) => listCloned.OrderBy(x => x.Id),
             ("id", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Id),
             ("createdat", SearchOrder.Asc) => listCloned.OrderBy(x => x.CreatedAt),
             ("createdat", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.CreatedAt),
-            _ => listCloned.OrderBy(x => x.Name)
+            _ => listCloned.OrderBy(x => x.Name).ThenBy(x=>x.Id)
         };
 
         return orderedList.ToList();
