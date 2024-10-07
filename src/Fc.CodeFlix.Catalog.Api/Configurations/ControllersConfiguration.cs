@@ -8,6 +8,7 @@ namespace Fc.CodeFlix.Catalog.Api.Configurations;
 
 using System.Text.Json;
 using Filters;
+using Policies;
 
 public static class ControllersConfiguration
 {
@@ -15,7 +16,13 @@ public static class ControllersConfiguration
         this IServiceCollection services
     )
     {
-        services.AddControllers(options => options.Filters.Add(typeof(ApiGlobalExceptionFilter)));
+        services
+            .AddControllers(options => options.Filters.Add(typeof(ApiGlobalExceptionFilter)))
+            .AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = new JsonSnakeCasePolicy();
+            });
+
         services.AddDocumentation();
         return services;
     }

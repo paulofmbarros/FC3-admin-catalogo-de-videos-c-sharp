@@ -7,6 +7,7 @@
 namespace FC.CodeFlix.Catalog.EndToEndTests.Api.Category.UpdateCategory;
 
 using Common;
+using Fc.CodeFlix.Catalog.Api.ApiModels.Category;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using Xunit;
 
@@ -19,9 +20,8 @@ public class UpdateCategoryApiTestFixtureCollection : ICollectionFixture<UpdateC
 
 public class UpdateCategoryApiTestFixture : CategoryBaseFixture
 {
-    public UpdateCategoryInput GetExampleInput(Guid? id = null) =>
+    public UpdateCategoryApiInput GetExampleInput() =>
         new(
-            id ?? Guid.NewGuid(),
             this.GetValidCategoryName(),
             this.GetValidCategoryDescription(),
             this.GetRandomBoolean()

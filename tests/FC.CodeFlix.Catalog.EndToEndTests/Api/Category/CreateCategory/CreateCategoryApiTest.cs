@@ -10,13 +10,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Codeflix.Catalog.EndToEndTests.Base;
+using Fc.CodeFlix.Catalog.Api.ApiModels.Response;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using FluentAssertions;
 using Infra.Data.EF;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Xunit;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 [Collection(nameof(CreateCategoryApiTestFixture))]
 public class CreateCategoryApiTest : IDisposable
@@ -40,7 +41,7 @@ public class CreateCategoryApiTest : IDisposable
         var input = this.fixture.GetExampleInput();
 
         var (response, output) = await this.fixture.
-            ApiClient.Post<CategoryModelOutput>(
+            ApiClient.Post<ApiResponse<CategoryModelOutput>>(
                 "/categories",
                 input
             );
@@ -48,14 +49,14 @@ public class CreateCategoryApiTest : IDisposable
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.Created);
         output.Should().NotBeNull();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be(input.Description);
-        output.IsActive.Should().Be((bool)input.IsActive);
-        output.Id.Should().NotBeEmpty();
-        output.CreatedAt.Should()
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be(input.Description);
+        output.Data.IsActive.Should().Be((bool)input.IsActive);
+        output.Data.Id.Should().NotBeEmpty();
+        output.Data.CreatedAt.Should()
             .NotBeSameDateAs(default);
         var dbCategory = await this.fixture
-            .CategoryPersistence.GetById(output.Id);
+            .CategoryPersistence.GetById(output.Data.Id);
         dbCategory.Should().NotBeNull();
         dbCategory!.Name.Should().Be(input.Name);
         dbCategory.Description.Should().Be(input.Description);

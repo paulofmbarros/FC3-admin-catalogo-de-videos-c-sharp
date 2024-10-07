@@ -8,11 +8,14 @@ namespace FC.CodeFlix.Catalog.EndToEndTests.Api.Category.UpdateCategory;
 
 using System.Net;
 using Extensions.DateTime;
+using Fc.CodeFlix.Catalog.Api.ApiModels.Category;
+using Fc.CodeFlix.Catalog.Api.ApiModels.Response;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
+
 
 [Collection(nameof(UpdateCategoryApiTestFixture))]
 public class UpdateCategoryApiTest : IDisposable
@@ -30,9 +33,9 @@ public class UpdateCategoryApiTest : IDisposable
 
         var exampleCategory = exampleCategories[10];
 
-        var categoryInput = fixture.GetExampleInput(exampleCategory.Id);
+        var categoryInput = fixture.GetExampleInput();
 
-        var (response, output) = await this.fixture.ApiClient.Put<CategoryModelOutput>(
+        var (response, output) = await this.fixture.ApiClient.Put<ApiResponse<CategoryModelOutput>>(
             $"/categories/{ exampleCategory.Id }",
             categoryInput
         );
@@ -40,11 +43,11 @@ public class UpdateCategoryApiTest : IDisposable
         response.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         output.Should().NotBeNull();
-        output.Id.Should().Be(exampleCategory.Id);
-        output.Name.Should().Be(categoryInput.Name);
-        output.Description.Should().Be(categoryInput.Description);
-        output.IsActive.Should().Be((bool)categoryInput.IsActive);
-        output.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
+        output.Data.Id.Should().Be(exampleCategory.Id);
+        output.Data.Name.Should().Be(categoryInput.Name);
+        output.Data.Description.Should().Be(categoryInput.Description);
+        output.Data.IsActive.Should().Be((bool)categoryInput.IsActive);
+        output.Data.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
 
     }
 
@@ -57,9 +60,9 @@ public class UpdateCategoryApiTest : IDisposable
 
         var exampleCategory = exampleCategories[10];
 
-        var categoryInput = new UpdateCategoryInput(exampleCategory.Id, this.fixture.GetValidCategoryName());
+        var categoryInput = new UpdateCategoryApiInput( this.fixture.GetValidCategoryName());
 
-        var (response, output) = await this.fixture.ApiClient.Put<CategoryModelOutput>(
+        var (response, output) = await this.fixture.ApiClient.Put<ApiResponse<CategoryModelOutput>>(
             $"/categories/{ exampleCategory.Id }",
             categoryInput
         );
@@ -67,11 +70,11 @@ public class UpdateCategoryApiTest : IDisposable
         response.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         output.Should().NotBeNull();
-        output.Id.Should().Be(exampleCategory.Id);
-        output.Name.Should().Be(categoryInput.Name);
-        output.Description.Should().Be(exampleCategory.Description);
-        output.IsActive.Should().Be(exampleCategory.IsActive);
-        output.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
+        output.Data.Id.Should().Be(exampleCategory.Id);
+        output.Data.Name.Should().Be(categoryInput.Name);
+        output.Data.Description.Should().Be(exampleCategory.Description);
+        output.Data.IsActive.Should().Be(exampleCategory.IsActive);
+        output.Data.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
 
     }
 
@@ -89,7 +92,7 @@ public class UpdateCategoryApiTest : IDisposable
             this.fixture.GetValidCategoryName(),
             this.fixture.GetValidCategoryDescription());
 
-        var (response, output) = await this.fixture.ApiClient.Put<CategoryModelOutput>(
+        var (response, output) = await this.fixture.ApiClient.Put<ApiResponse<CategoryModelOutput>>(
             $"/categories/{ exampleCategory.Id }",
             categoryInput
         );
@@ -97,11 +100,11 @@ public class UpdateCategoryApiTest : IDisposable
         response.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         output.Should().NotBeNull();
-        output.Id.Should().Be(exampleCategory.Id);
-        output.Name.Should().Be(categoryInput.Name);
-        output.Description.Should().Be(categoryInput.Description);
-        output.IsActive.Should().Be(exampleCategory.IsActive);
-        output.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
+        output.Data.Id.Should().Be(exampleCategory.Id);
+        output.Data.Name.Should().Be(categoryInput.Name);
+        output.Data.Description.Should().Be(categoryInput.Description);
+        output.Data.IsActive.Should().Be(exampleCategory.IsActive);
+        output.Data.CreatedAt.TrimMilliSeconds().Should().Be(exampleCategory.CreatedAt.TrimMilliSeconds());
 
     }
 
@@ -114,7 +117,7 @@ public class UpdateCategoryApiTest : IDisposable
 
         var exampleCategory = Guid.NewGuid();
 
-        var categoryInput = this.fixture.GetExampleInput(exampleCategory);
+        var categoryInput = this.fixture.GetExampleInput();
 
         var (response, output) = await this.fixture.ApiClient.Put<ProblemDetails>(
             $"/categories/{ exampleCategory }",
@@ -134,17 +137,15 @@ public class UpdateCategoryApiTest : IDisposable
     [Theory(DisplayName = nameof(ErrorWhenInvalidInput))]
     [Trait("EndToEnd/Api", "Category/UpdateCategory - Endpoints")]
     [MemberData(nameof(UpdateCategoryApiTestDataGenerator.GetInvalidInputs), MemberType = typeof(UpdateCategoryApiTestDataGenerator))]
-    public async Task ErrorWhenInvalidInput(UpdateCategoryInput input, string errorMessage)
+    public async Task ErrorWhenInvalidInput(UpdateCategoryApiInput input, string errorMessage)
     {
         var exampleCategories = this.fixture.GetExampleCategoriesList(20);
         await this.fixture.CategoryPersistence.InsertList(exampleCategories);
 
         var categoryInput = exampleCategories[10];
 
-        input = input with { Id = categoryInput.Id };
-
         var (response, output) = await this.fixture.ApiClient.Put<ProblemDetails>(
-            $"/categories/{ input.Id }",
+            $"/categories/{ categoryInput.Id }",
             input
         );
 
