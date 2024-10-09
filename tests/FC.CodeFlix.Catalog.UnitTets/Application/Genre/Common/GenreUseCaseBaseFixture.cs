@@ -4,20 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.UnitTets.Common;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Genre.Common;
 
-using Bogus;
+using UnitTets.Common;
 
-public abstract class BaseFixture
+public class GenreUseCaseBaseFixture : BaseFixture
 {
-
-    public Faker Faker { get; set; }
-
-
-    protected BaseFixture()
-    {
-        this.Faker = new Faker("pt_BR");
-    }
-
-    public bool GetRandomBoolean() => this.Faker.Random.Bool();
+    public string GetValidGenreName() => Faker.Commerce.Categories(1)[0];
 }

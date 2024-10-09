@@ -42,8 +42,6 @@ public abstract class CategoryUseCasesBaseFixture : BaseFixture
     }
 
 
-    public bool GetRandomBoolean() => this.Faker.Random.Bool();
-
     public Category GetExampleCategory()
     {
         var category = new Category(this.GetValidCategoryName(), this.GetValidCategoryDescription(), this.GetRandomBoolean());

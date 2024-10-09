@@ -19,7 +19,21 @@ public class GenreTestFixture : BaseFixture
 {
     public string GetValidName() => Faker.Commerce.Categories(1)[0];
 
-    public Genre GetExampleGenre (bool isActive = true)
-        => new (this.GetValidName(), isActive);
+    public Genre GetExampleGenre(bool isActive = true, List<Guid>? categoriesIds = null)
+    {
+        var genre = new Genre(this.GetValidName(), isActive);
+
+        if (categoriesIds == null)
+        {
+            return genre;
+        }
+
+        foreach (var categoryId in categoriesIds)
+        {
+            genre.AddCategory(categoryId);
+        }
+
+        return genre;
+    }
 
 }

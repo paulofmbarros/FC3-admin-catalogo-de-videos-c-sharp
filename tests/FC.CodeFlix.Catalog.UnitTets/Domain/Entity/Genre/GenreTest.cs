@@ -134,5 +134,84 @@ public class GenreTest
           .WithMessage("Name should not be empty or null.");
 
     }
+
+    [Fact(DisplayName = nameof(AddCategory))]
+    [Trait("Domain ", "Genre - Aggregates")]
+    public void AddCategory()
+    {
+        var genre = this.genreTestFixture.GetExampleGenre();
+        var categoryGuid = Guid.NewGuid();
+
+        genre.AddCategory(categoryGuid);
+
+        genre.Categories.Should().NotBeNull();
+        genre.Categories.Should().HaveCount(1);
+        genre.Categories.Should().Contain(categoryGuid);
+
+    }
+
+    [Fact(DisplayName = nameof(AddTwoCategories))]
+    [Trait("Domain ", "Genre - Aggregates")]
+    public void AddTwoCategories()
+    {
+        var genre = this.genreTestFixture.GetExampleGenre();
+        var categoryGuid = Guid.NewGuid();
+        var categoryGuid2 = Guid.NewGuid();
+
+        genre.AddCategory(categoryGuid);
+        genre.AddCategory(categoryGuid2);
+
+        genre.Categories.Should().NotBeNull();
+        genre.Categories.Should().HaveCount(2);
+        genre.Categories.Should().Contain(categoryGuid);
+        genre.Categories.Should().Contain(categoryGuid2);
+
+    }
+
+    [Fact(DisplayName = nameof(RemoveCategories))]
+    [Trait("Domain ", "Genre - Aggregates")]
+    public void RemoveCategories()
+    {
+
+        var exampleGuid = Guid.NewGuid();
+
+        var genre = this.genreTestFixture.GetExampleGenre(categoriesIds:new List<Guid>()
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            exampleGuid,
+            Guid.NewGuid(),
+        });
+
+        genre.RemoveCategory(exampleGuid);
+
+        genre.Categories.Should().HaveCount(4);
+        genre.Categories.Should().NotContain(exampleGuid);
+
+    }
+
+    [Fact(DisplayName = nameof(RemoveAllCategories))]
+    [Trait("Domain ", "Genre - Aggregates")]
+    public void RemoveAllCategories()
+    {
+
+
+        var genre = this.genreTestFixture.GetExampleGenre(categoriesIds:new List<Guid>()
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+        });
+
+        genre.RemoveAllCategories();
+
+        genre.Categories.Should().HaveCount(0);
+
+    }
+
+
     
 }
