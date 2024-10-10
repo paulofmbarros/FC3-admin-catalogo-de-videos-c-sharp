@@ -9,7 +9,7 @@ namespace Fc.CodeFlix.Catalog.Domain.Entity;
 using SeedWork;
 using Validation;
 
-public class Genre
+public class Genre : AggregateRoot
 {
     public string Name { get; private set; }
     

@@ -33,6 +33,7 @@ public class GenreTest
         genre.Should().NotBeNull();
         genre.Name.Should().Be(genre.Name);
         genre.IsActive.Should().BeTrue();
+        genre.Id.Should().NotBe(Guid.Empty);
 
         genre.CreatedAt.Should().BeOnOrAfter(dateTimeBefore).And.BeOnOrBefore(dateTimeAfter);
 
@@ -52,6 +53,7 @@ public class GenreTest
 
         genre.Should().NotBeNull();
         genre.IsActive.Should().Be(isActive);
+        genre.Id.Should().NotBe(Guid.Empty);
 
         genre.CreatedAt.Should().BeOnOrAfter(dateTimeBefore).And.BeOnOrBefore(dateTimeAfter);
 
@@ -69,6 +71,7 @@ public class GenreTest
         genre.Activate();
 
         genre.Should().NotBeNull();
+        genre.Id.Should().NotBe(Guid.Empty);
         genre.IsActive.Should().Be(true);
 
     }
@@ -84,6 +87,7 @@ public class GenreTest
         genre.Deactivate();
 
         genre.Should().NotBeNull();
+        genre.Id.Should().NotBe(Guid.Empty);
         genre.IsActive.Should().Be(false);
 
     }
@@ -101,6 +105,7 @@ public class GenreTest
 
         genre.Should().NotBeNull();
         genre.Name.Should().Be(newName);
+        genre.Id.Should().NotBe(Guid.Empty);
         genre.IsActive.Should().Be(oldIsActive);
 
     }

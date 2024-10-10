@@ -4,13 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Genre.CreateGenre;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using Common;
+using MediatR;
 
-public interface ICategoryRepository : IGenericRepository<Category>, ISearchableRepository<Category>
+public interface ICreateGenre : IRequestHandler<CreateGenreInput, GenreModelOutput>
 {
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
+
+
 }

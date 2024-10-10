@@ -8,9 +8,8 @@ namespace Fc.CodeFlix.Catalog.Domain.Repository;
 
 using Entity;
 using SeedWork;
-using SeedWork.SearchableRepository;
 
-public interface ICategoryRepository : IGenericRepository<Category>, ISearchableRepository<Category>
+public interface IGenreRepository : IGenericRepository<Genre>
 {
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
+    
 }

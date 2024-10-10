@@ -72,6 +72,8 @@ public class CategoryRepository : ICategoryRepository
         return new SearchOutput<Category>(searchInput.Page,searchInput.PerPage, total, items);
     }
 
+    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
+
     private IQueryable<Category> AddOrderToQuery(IQueryable<Category> query, string orderProperty, SearchOrder order)
        => (orderProperty.ToLower(), order) switch
         {
