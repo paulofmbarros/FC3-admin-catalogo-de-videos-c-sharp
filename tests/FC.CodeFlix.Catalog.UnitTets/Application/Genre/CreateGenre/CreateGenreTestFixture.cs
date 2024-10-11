@@ -22,6 +22,8 @@ public class CreateGenreTestFixtureCollection : ICollectionFixture<CreateGenreTe
 
 public class CreateGenreTestFixture : GenreUseCaseBaseFixture
 {
+    public CreateGenreInput GetExampleInput(string? name) => new CreateGenreInput(name!, this.GetRandomBoolean());
+
     public CreateGenreInput GetExampleInput() => new CreateGenreInput(this.GetValidGenreName(), this.GetRandomBoolean());
 
     public CreateGenreInput GetExampleInputWithCategories()
@@ -32,15 +34,5 @@ public class CreateGenreTestFixture : GenreUseCaseBaseFixture
        return new CreateGenreInput(this.GetValidGenreName(), this.GetRandomBoolean(), cateoriesId);
 
     }
-
-    public Mock<IGenreRepository> GetGenreRepositoryMock()
-        => new() ;
-
-    public Mock<IUnitOfWork> GetUnitOfWorkMock()
-     => new();
-
-    public Mock<ICategoryRepository> GetCategoryRepositoryMock()
-        => new ();
-
 
 }

@@ -32,15 +32,10 @@ public class CreateGenre : ICreateGenre
     {
         var genre = new Genre(request.Name, request.IsActive);
 
-        if (request.Categories != null)
+        if (request.Categories is not null && request.Categories.Count > 0)
         {
-            var idsInPersistence = await this.categoryRepository.GetIdsByIds(request.Categories, cancellationToken);
 
-            if (idsInPersistence.Count < request.Categories.Count)
-            {
-                var notFoundIds = request.Categories.Except(idsInPersistence).ToList();
-                throw new RelatedAggregateException($"Related category Id (or ids) not found: {string.Join(",", notFoundIds)}");
-            }
+            await this.ValidateCategoriesIds(request, cancellationToken);
 
             foreach (var categoryId in request.Categories)
             {
@@ -52,5 +47,16 @@ public class CreateGenre : ICreateGenre
         await this.unitOfWork.Commit(cancellationToken);
 
         return GenreModelOutput.FromGenre(genre);
+    }
+
+    private async Task ValidateCategoriesIds(CreateGenreInput request, CancellationToken cancellationToken)
+    {
+        var idsInPersistence = await this.categoryRepository.GetIdsByIds(request.Categories, cancellationToken);
+
+        if (idsInPersistence.Count < request.Categories.Count)
+        {
+            var notFoundIds = request.Categories.Except(idsInPersistence).ToList();
+            throw new RelatedAggregateException($"Related category Id (or ids) not found: {string.Join(",", notFoundIds)}");
+        }
     }
 }

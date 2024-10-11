@@ -9,6 +9,7 @@ namespace FC.CodeFlix.Catalog.UnitTets.Application.Genre.CreateGenre;
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Genre.CreateGenre;
 using Fc.CodeFlix.Catalog.Domain.Entity;
+using Fc.CodeFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 
@@ -99,6 +100,27 @@ public class CreateGenreTests
         genreRepositoryMock.Verify(x=>x.Insert(It.IsAny<Genre>(), It.IsAny<CancellationToken>() ), Times.Never);
         unitOfWorkMock.Verify(x=>x.Commit(It.IsAny<CancellationToken>()), Times.Never);
         categoryRepositoryMock.Verify(x=>x.GetIdsByIds(It.IsAny<List<Guid>>(), It.IsAny<CancellationToken>()), Times.Once);
+
+    }
+
+    [Theory(DisplayName = nameof(ThrowWhenNameIsInvalid))]
+    [Trait("Application", "CreateGenre - Use Cases")]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public async Task ThrowWhenNameIsInvalid(string name)
+    {
+        var genreRepositoryMock = this.fixture.GetGenreRepositoryMock();
+        var categoryRepositoryMock = this.fixture.GetCategoryRepositoryMock();
+        var unitOfWorkMock = this.fixture.GetUnitOfWorkMock();
+
+        var input = this.fixture.GetExampleInput(name);
+
+        var useCase = new CreateGenre(genreRepositoryMock.Object, unitOfWorkMock.Object, categoryRepositoryMock.Object);
+
+        var action = async ()  => await useCase.Handle(input, CancellationToken.None);
+
+        await action.Should().ThrowAsync<EntityValidationException>().WithMessage($"Name should not be empty or null.");
 
     }
 }
