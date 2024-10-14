@@ -41,6 +41,17 @@ public class UpdateGenre : IUpdateGenre
             }
         }
 
+        if(request.CategoriesIds is not null && request.CategoriesIds.Count != 0)
+        {
+            genre.RemoveAllCategories();
+
+            foreach (var categoryId in request.CategoriesIds)
+            {
+               // var category = await this.categoryRepository.Get(categoryId, cancellationToken);
+                genre.AddCategory(categoryId);
+            }
+        }
+
         await this.genreRepository.Update(genre, cancellationToken);
         await this.unitOfWork.Commit(cancellationToken);
 

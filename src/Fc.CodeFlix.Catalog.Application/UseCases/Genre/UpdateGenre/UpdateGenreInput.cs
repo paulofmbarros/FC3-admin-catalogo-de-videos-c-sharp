@@ -15,10 +15,13 @@ public class UpdateGenreInput : IRequest<GenreModelOutput>
     public string Name { get; set; }
     public bool? IsActive { get; set; }
 
-    public UpdateGenreInput(Guid id, string name, bool? isActive)
+    public List<Guid>? CategoriesIds { get; set; }
+
+    public UpdateGenreInput(Guid id, string name, bool? isActive = null, List<Guid> categoriesIds = null)
     {
         this.Id = id;
         this.Name = name;
         this.IsActive = isActive;
+        this.CategoriesIds = categoriesIds;
     }
 }

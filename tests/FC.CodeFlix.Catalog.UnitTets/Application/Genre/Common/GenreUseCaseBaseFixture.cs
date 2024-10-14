@@ -25,6 +25,24 @@ public class GenreUseCaseBaseFixture : BaseFixture
     public Mock<ICategoryRepository> GetCategoryRepositoryMock()
         => new ();
 
-    public Genre GetExampleGenre()
-        => new Genre(this.GetValidGenreName(), this.GetRandomBoolean());
+    public Genre GetExampleGenre(bool? isActive = null, List<Guid>? categoriesIds = null)
+    {
+        var genre = new Genre(this.GetValidGenreName(), isActive ?? this.GetRandomBoolean());
+        if (categoriesIds == null)
+        {
+            return genre;
+        }
+
+        foreach (var categoriesId in categoriesIds)
+        {
+            genre.AddCategory(categoriesId);
+        }
+
+        return genre;
+    }
+
+    public List<Guid> GetRandomIdsList(int? count = null)
+        => Enumerable.Range(0, count ?? new Random().Next(1,10)).Select(x => Guid.NewGuid()).ToList();
+
+
 }
