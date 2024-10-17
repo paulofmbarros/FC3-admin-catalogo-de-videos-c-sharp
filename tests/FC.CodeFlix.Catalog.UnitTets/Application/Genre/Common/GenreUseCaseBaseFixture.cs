@@ -41,6 +41,23 @@ public class GenreUseCaseBaseFixture : BaseFixture
         return genre;
     }
 
+    public List<Genre> GetExampleGenresList(int count = 10)
+    {
+        var genres = new List<Genre>();
+        for (var i = 0; i < count; i++)
+        {
+            var genre = this.GetExampleGenre();
+            var categories  = this.GetRandomIdsList();
+            foreach (var categoryId in categories)
+            {
+                genre.AddCategory(categoryId);
+            }
+            genres.Add(genre);
+        }
+
+        return genres;
+    }
+
     public List<Guid> GetRandomIdsList(int? count = null)
         => Enumerable.Range(0, count ?? new Random().Next(1,10)).Select(x => Guid.NewGuid()).ToList();
 
