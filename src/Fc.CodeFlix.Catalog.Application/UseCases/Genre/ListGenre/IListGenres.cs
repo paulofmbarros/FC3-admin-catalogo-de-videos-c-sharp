@@ -4,13 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Genre.ListGenre;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using MediatR;
 
-public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre>
+public interface IListGenres : IRequestHandler<ListGenresInput, ListGenresOutput>
 {
     
 }

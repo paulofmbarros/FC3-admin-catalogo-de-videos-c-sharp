@@ -28,4 +28,6 @@ public abstract class PaginatedListInput
         this.Sort = sort;
         this.Direction = direction;
     }
+
+    public SearchInput ToSearchInput() => new(this.Page, this.PerPage, this.Search, this.Sort, this.Direction);
 }

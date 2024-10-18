@@ -7,6 +7,7 @@
 namespace FC.CodeFlix.Catalog.UnitTets.Application.Genre.ListGenres;
 
 using Common;
+using Fc.CodeFlix.Catalog.Application.UseCases.Genre.ListGenre;
 using Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
 [CollectionDefinition(nameof(ListGenreTestFixture))]
