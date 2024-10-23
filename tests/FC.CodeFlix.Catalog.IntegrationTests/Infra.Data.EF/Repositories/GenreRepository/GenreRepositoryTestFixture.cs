@@ -67,6 +67,9 @@ public class GenreRepositoryTestFixture : BaseFixture
         return categoryName;
     }
 
+    public List<Genre> GetExampleGenresList(int length = 10)
+        => Enumerable.Range(0, length).Select(_ => this.GetExampleGenre()).ToList();
+
     public string GetValidCategoryDescription()
     {
         var categoryDescription = this.Faker.Commerce.ProductDescription();
