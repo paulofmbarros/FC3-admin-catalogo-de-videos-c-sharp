@@ -81,6 +81,21 @@ public class GenreRepositoryTestFixture : BaseFixture
         return categoryDescription;
     }
 
+    public Genre GetExampleGenre(bool? isActive = null, List<Guid> categoryIds = null, string? name = null)
+    {
+        var genre = new Genre(name ?? this.GetGenreName(), isActive ?? this.GetRandomBoolean());
+        if (categoryIds != null)
+        {
+            foreach (var categoryId in categoryIds)
+            {
+                genre.AddCategory(categoryId);
+            }
+        }
 
+        return genre;
+    }
+
+    public List<Genre> GetExampleGenreListByNames(List<string> names)
+        => names.Select(name => this.GetExampleGenre(name: name)).ToList();
 
 }
