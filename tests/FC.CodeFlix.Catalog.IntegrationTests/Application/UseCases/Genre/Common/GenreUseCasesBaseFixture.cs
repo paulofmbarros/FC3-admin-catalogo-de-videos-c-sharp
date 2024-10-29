@@ -4,21 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.GenreRepository;
+namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Genre.Common;
 
 using Base;
+using Catalog.Infra.Data.EF.Repositories;
 using Fc.CodeFlix.Catalog.Domain.Entity;
-using Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
-[CollectionDefinition(nameof(GenreRepositoryTestFixture))]
-public class GenreRepostoryTestFixtureCollection : ICollectionFixture<GenreRepositoryTestFixture>
+public class GenreUseCasesBaseFixture : BaseFixture
 {
-
-}
-
-public class GenreRepositoryTestFixture : BaseFixture
-{
-    
     public bool GetRandomBoolean() => this.Faker.Random.Bool();
     public Genre GetExampleGenre()
     {
@@ -26,7 +19,7 @@ public class GenreRepositoryTestFixture : BaseFixture
             this.GetRandomBoolean());
         return category;
     }
-    
+
     public string GetGenreName()
     {
         var genreName = "";
@@ -81,39 +74,4 @@ public class GenreRepositoryTestFixture : BaseFixture
 
         return categoryDescription;
     }
-
-    public Genre GetExampleGenre(bool? isActive = null, List<Guid> categoryIds = null, string? name = null)
-    {
-        var genre = new Genre(name ?? this.GetGenreName(), isActive ?? this.GetRandomBoolean());
-        if (categoryIds != null)
-        {
-            foreach (var categoryId in categoryIds)
-            {
-                genre.AddCategory(categoryId);
-            }
-        }
-
-        return genre;
-    }
-
-    public List<Genre> GetExampleGenreListByNames(List<string> names)
-        => names.Select(name => this.GetExampleGenre(name: name)).ToList();
-
- public List<Genre> CloneGenresListOrdered(List<Genre> genres,string orderBy, SearchOrder order)
-    {
-        var listCloned = new List<Genre>(genres);
-        var orderedList = (orderBy.ToLower(), order) switch
-        {
-            ("name", SearchOrder.Asc) => listCloned.OrderBy(x => x.Name).ThenBy(x=>x.Id),
-            ("name", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Name).ThenByDescending(x=>x.Id),
-            ("id", SearchOrder.Asc) => listCloned.OrderBy(x => x.Id),
-            ("id", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Id),
-            ("createdat", SearchOrder.Asc) => listCloned.OrderBy(x => x.CreatedAt),
-            ("createdat", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.CreatedAt),
-            _ => listCloned.OrderBy(x => x.Name).ThenBy(x=>x.Id)
-        };
-
-        return orderedList.ToList();
-    }
-
 }

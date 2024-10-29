@@ -18,9 +18,9 @@ public class GenreModelOutput
 
     public DateTime CreatedAt { get; set; }
 
-    public IReadOnlyList<Guid> Categories { get; set; }
+    public IReadOnlyList<GenreModelOutputCategory> Categories { get; set; }
 
-    public GenreModelOutput(Guid id, string name, bool isActive, DateTime createdAt, IReadOnlyList<Guid> categories)
+    public GenreModelOutput(Guid id, string name, bool isActive, DateTime createdAt, IReadOnlyList<GenreModelOutputCategory> categories)
     {
         this.Id = id;
         this.Name = name;
@@ -29,5 +29,25 @@ public class GenreModelOutput
         this.Categories = categories;
     }
 
-    public static GenreModelOutput FromGenre(Genre genre) => new (genre.Id, genre.Name, genre.IsActive, genre.CreatedAt, genre.Categories);
+    public static GenreModelOutput FromGenre(Genre genre) => new(
+        genre.Id,
+        genre.Name,
+        genre.IsActive,
+        genre.CreatedAt,
+        genre.Categories.Select(categoryId => new GenreModelOutputCategory(categoryId, null))
+            .ToList()
+            .AsReadOnly());
+}
+
+public class GenreModelOutputCategory
+{
+    public Guid Id { get; set; }
+
+    public string? Name { get; set; }
+
+    public GenreModelOutputCategory(Guid id, string? name = null)
+    {
+        this.Id = id;
+        this.Name = name;
+    }
 }

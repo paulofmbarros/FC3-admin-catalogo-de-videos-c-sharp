@@ -177,7 +177,7 @@ public class UpdateGenreTests
         output.Categories.Should().NotBeNull();
         output.CreatedAt.Should().NotBeSameDateAs(default);
         output.Categories.Should().HaveCount(exampleCategories.Count);
-        exampleCategories.ForEach(expectedId=>output.Categories.Should().Contain(expectedId));
+        exampleCategories.ForEach(expectedId=>output.Categories.Should().Contain(relation => relation.Id == expectedId));
 
         genreRepositoryMock.Verify(x=>x.Get(It.Is<Guid>(id=>id == exampleGenre.Id), It.IsAny<CancellationToken>()), Times.Once);
         genreRepositoryMock.Verify(x=>x.Update(It.Is<Genre>(g=>g.Id == exampleGenre.Id), It.IsAny<CancellationToken>()), Times.Once);
@@ -255,7 +255,7 @@ public class UpdateGenreTests
         output.Categories.Should().NotBeNull();
         output.CreatedAt.Should().NotBeSameDateAs(default);
         output.Categories.Should().HaveCount(exampleCategories.Count);
-        exampleCategories.ForEach(expectedId=>output.Categories.Should().Contain(expectedId));
+        exampleCategories.ForEach(expectedId=>output.Categories.Should().Contain(categoryOutput => categoryOutput.Id == expectedId));
 
         genreRepositoryMock.Verify(x=>x.Get(It.Is<Guid>(id=>id == exampleGenre.Id), It.IsAny<CancellationToken>()), Times.Once);
         genreRepositoryMock.Verify(x=>x.Update(It.Is<Genre>(g=>g.Id == exampleGenre.Id), It.IsAny<CancellationToken>()), Times.Once);
@@ -294,7 +294,7 @@ public class UpdateGenreTests
         output.Categories.Should().NotBeNull();
         output.CreatedAt.Should().NotBeSameDateAs(default);
         output.Categories.Should().HaveCount(exampleCategories.Count);
-        exampleCategories.ForEach(expectedId=>output.Categories.Should().Contain(expectedId));
+        exampleCategories.ForEach(expectedId=>output.Categories.Should().Contain(relation => relation.Id == expectedId));
 
         genreRepositoryMock.Verify(x=>x.Get(It.Is<Guid>(id=>id == exampleGenre.Id), It.IsAny<CancellationToken>()), Times.Once);
         genreRepositoryMock.Verify(x=>x.Update(It.Is<Genre>(g=>g.Id == exampleGenre.Id), It.IsAny<CancellationToken>()), Times.Once);

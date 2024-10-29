@@ -71,7 +71,7 @@ public class CreateGenreTests
         output.Name.Should().Be(input.Name);
         output.IsActive.Should().Be(input.IsActive);
         output.Categories.Should().HaveCount(input.Categories?.Count ?? 0);
-        input.Categories?.ForEach(x=>output.Categories.Should().Contain(x));
+        input.Categories?.ForEach(x=>output.Categories.Should().Contain(relation=> relation.Id==x));
         output.CreatedAt.Should().NotBeSameDateAs(default);
 
 

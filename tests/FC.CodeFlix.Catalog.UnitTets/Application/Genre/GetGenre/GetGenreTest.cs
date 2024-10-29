@@ -48,9 +48,9 @@ public class GetGenreTest
         output.CreatedAt.Should().NotBeSameDateAs(default);
         output.Categories.Should().HaveCount(exampleGenre.Categories.Count());
 
-        foreach (var expectedId in output.Categories)
+        foreach (var outputCategory in output.Categories)
         {
-            exampleGenre.Categories.Should().Contain(x => x == expectedId);
+            exampleGenre.Categories.Should().Contain(x => x == outputCategory.Id);
         }
 
 

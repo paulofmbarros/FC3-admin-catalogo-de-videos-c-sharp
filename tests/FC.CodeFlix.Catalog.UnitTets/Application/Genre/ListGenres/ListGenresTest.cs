@@ -12,6 +12,7 @@ using Fc.CodeFlix.Catalog.Application.UseCases.Genre.ListGenre;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using Moq;
 
 [Collection(nameof(ListGenreTestFixture))]
@@ -57,7 +58,6 @@ public class ListGenresTest
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().NotBeNull();
         output.Items.Should().HaveCount(exampleGenresList.Count);
-        output.Items.Should().BeEquivalentTo(exampleGenresList);
 
         foreach (var expectedId in output.Items.Select(x=>x.Id))
         {

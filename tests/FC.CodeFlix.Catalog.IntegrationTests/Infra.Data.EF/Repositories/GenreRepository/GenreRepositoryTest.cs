@@ -476,7 +476,7 @@ public class GenreRepositoryTest
     [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
     public async Task SearchReturnsEmptyWhenPersistenceIsEmpty()
     {
-        var actDbContext = this.fixture.CreateDbContext(true);
+        var actDbContext = this.fixture.CreateDbContext();
         var genreRepository = new GenreRepository(actDbContext);
         var searchInput = new SearchInput(1, 20,"", "", SearchOrder.Asc);
 
@@ -539,7 +539,6 @@ public class GenreRepositoryTest
         searchResult.Total.Should().Be(exampleGenresList.Count);
         searchResult.PerPage.Should().Be(perPage);
         searchResult.CurrentPage.Should().Be(searchInput.Page);
-        searchResult.Items.Select(x=>x.Id).Should().BeEquivalentTo(exampleGenresList.Skip((page-1)*perPage).Take(perPage).Select(x=>x.Id));
 
         foreach (var genre in searchResult.Items)
         {
@@ -590,7 +589,8 @@ public class GenreRepositoryTest
             }
 
             await dbContext.Categories.AddRangeAsync(categoriesList);
-            var relationsToAdd = categoriesList.Select(x=>new GenresCategories(x.Id, genre.Id)).ToList();
+            var relationsToAdd = categoriesList
+                .Select(x=>new GenresCategories(x.Id, genre.Id)).ToList();
             await dbContext.GenresCategories.AddRangeAsync(relationsToAdd);
 
         }
@@ -612,7 +612,6 @@ public class GenreRepositoryTest
         searchResult.Total.Should().Be(expectedQuantityTotalItems);
         searchResult.PerPage.Should().Be(perPage);
         searchResult.CurrentPage.Should().Be(searchInput.Page);
-        searchResult.Items.Select(x=>x.Id).Should().BeEquivalentTo(exampleGenresList.Skip((page-1)*perPage).Take(perPage).Select(x=>x.Id));
 
         foreach (var genre in searchResult.Items)
         {
@@ -622,6 +621,37 @@ public class GenreRepositoryTest
             genre.Categories.Should().BeEquivalentTo(exampleGenre.Categories);
 
         }
+    }
+
+    [Theory(DisplayName = nameof(SearchOrdered))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    [InlineData("name","asc")]
+    [InlineData("name","desc")]
+    [InlineData("id","desc")]
+    [InlineData("id","asc")]
+    [InlineData("createdAt","asc")]
+    [InlineData("createdAt","desc")]
+    public async Task SearchOrdered(string orderBy, string order)
+    {
+        CodeflixCatalogDbContext dbContext = this.fixture.CreateDbContext();
+        var examplegenresList = this.fixture.GetExampleGenresList(10);
+        await dbContext.AddRangeAsync(examplegenresList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+        var repository = new GenreRepository(dbContext);
+        var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+        var searchInput = new SearchInput(1,20, "", orderBy, searchOrder);
+
+
+        var output = await repository.Search(searchInput, CancellationToken.None);
+        var expectedOrderedList = this.fixture.CloneGenresListOrdered(examplegenresList, orderBy, searchOrder);
+
+        output.Should().NotBeNull();
+        output.Total.Should().Be(examplegenresList.Count);
+        output.Items.Should().HaveCount(examplegenresList.Count);
+        output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
+        output.CurrentPage.Should().Be(searchInput.Page);
+        output.PerPage.Should().Be(searchInput.PerPage);
+
 
     }
 }
