@@ -8,6 +8,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Genre.Create
 
 using Catalog.Infra.Data.EF;
 using Catalog.Infra.Data.EF.Repositories;
+using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Genre.CreateGenre;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -96,7 +97,31 @@ public class CreateGenreTest
         relations.Should().HaveCount(input.Categories.Count);
         relations.Select(x => x.CategoryId).Should().BeEquivalentTo(input.Categories);
 
+    }
 
+    [Fact(DisplayName = nameof(CreateGenreThrowsWhenCategoryDoesntExist))]
+    [Trait("Application", "CreateGenre - Use Cases")]
+    public async Task CreateGenreThrowsWhenCategoryDoesntExist()
+    {
+
+        var categories = this.fixture.GetExampleCategoriesList(5);
+
+        var arrangeDbContext = this.fixture.CreateDbContext();
+        await arrangeDbContext.Categories.AddRangeAsync(categories);
+        await arrangeDbContext.SaveChangesAsync();
+
+        var input = this.fixture.GetExampleInput();
+
+        input.Categories = categories.Select(x => x.Id).ToList();
+        input.Categories.Add(Guid.NewGuid());
+
+        var dbContext = this.fixture.CreateDbContext(true);
+        var createGenre = new CreateGenre(new GenreRepository(dbContext), new UnitOfWork(dbContext), new CategoryRepository(dbContext));
+
+        var action = async () => await createGenre.Handle(input, CancellationToken.None);
+
+        await action.Should().ThrowAsync<RelatedAggregateException>()
+            .WithMessage($"Related category Id (or ids) not found: {input.Categories.Last()}");
 
     }
 }
