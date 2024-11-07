@@ -280,5 +280,26 @@ public class CategoryRepositoryTests
 
     }
 
+    [Fact(DisplayName = nameof(ListByIds))]
+    [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+    public async Task ListByIds()
+    {
+        CodeflixCatalogDbContext dbContext = fixture.CreateDbContext();
+        var exampleCategoryList = fixture.GetExampleCategoriesList(15);
+        var categoriesIds = exampleCategoryList.Select(x => x.Id).Take(new Random().Next(1, 3)).ToList();
+        await dbContext.AddRangeAsync(exampleCategoryList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+        var categoryRepository = new CategoryRepository(dbContext);
+        var searchInput = new SearchInput(1,20,"","", SearchOrder.Asc);
+
+
+        var categoriesList = await categoryRepository.ListByIds(categoriesIds, CancellationToken.None);
+
+        categoriesList.Should().NotBeNull();
+        categoriesList.Should().HaveCount(categoriesIds.Count);
+        categoriesList.Should().BeEquivalentTo(exampleCategoryList.Where(x => categoriesIds.Contains(x.Id)), options => options.WithStrictOrdering());
+
+    }
+
 
 }
