@@ -13,10 +13,12 @@ using Domain.SeedWork.SearchableRepository;
 public class ListGenres : IListGenres
 {
     private readonly IGenreRepository genreRepository;
+    private readonly ICategoryRepository categoryRepository;
 
-    public ListGenres(IGenreRepository genreRepository)
+    public ListGenres(IGenreRepository genreRepository, ICategoryRepository categoryRepository)
     {
         this.genreRepository = genreRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public async Task<ListGenresOutput> Handle(ListGenresInput request, CancellationToken cancellationToken)
@@ -24,7 +26,19 @@ public class ListGenres : IListGenres
         var searchInput = request.ToSearchInput();
         var searchOutput = await this.genreRepository.Search(searchInput, cancellationToken);
 
-        return ListGenresOutput.FromSearchOutput(searchOutput);
+        var relatedCategoriesIds = searchOutput.Items
+            .SelectMany(item => item.Categories)
+            .Distinct()
+            .ToList();
+
+        var categories = await this.categoryRepository.GetListByIds(relatedCategoriesIds, cancellationToken);
+
+
+        var output = ListGenresOutput.FromSearchOutput(searchOutput);
+
+        output.FillWithCategoryNames(categories);
+
+        return output;
 
     }
 }

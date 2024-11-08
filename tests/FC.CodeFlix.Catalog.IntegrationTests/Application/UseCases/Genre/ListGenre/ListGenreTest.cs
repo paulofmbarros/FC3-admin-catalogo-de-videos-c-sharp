@@ -27,8 +27,8 @@ public class ListGenreTest
         await arrangeDbContext.AddRangeAsync(exampleGenre);
         await arrangeDbContext.SaveChangesAsync();
 
-
-        var useCase = new ListGenres(new GenreRepository(this.fixture.CreateDbContext(true)));
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var useCase = new ListGenres(new GenreRepository(actDbContext), new CategoryRepository(actDbContext));
 
         var input = new ListGenresInput(1, 20);
 
@@ -47,7 +47,8 @@ public class ListGenreTest
     [Trait("Integration/Application ", "ListGenres - UseCases")]
     public async Task ListGenresReturnsWEmptyWhenPersisitenceIsEmpty()
     {
-        var useCase = new ListGenres(new GenreRepository(this.fixture.CreateDbContext()));
+        var arrangeDbContext = this.fixture.CreateDbContext();
+        var useCase = new ListGenres(new GenreRepository(arrangeDbContext), new CategoryRepository(arrangeDbContext));
 
         var input = new ListGenresInput(1, 20);
 
@@ -92,9 +93,10 @@ public class ListGenreTest
         await arrangeDbContext.AddRangeAsync(exampleCategories);
         await arrangeDbContext.AddRangeAsync(genreCategories);
         await arrangeDbContext.SaveChangesAsync();
+        var actDbContext = this.fixture.CreateDbContext(true);
 
 
-        var useCase = new ListGenres(new GenreRepository(this.fixture.CreateDbContext(true)));
+        var useCase = new ListGenres(new GenreRepository(actDbContext), new CategoryRepository(actDbContext));
 
         var input = new ListGenresInput(1, 20);
 
@@ -105,11 +107,19 @@ public class ListGenreTest
         output.Page.Should().Be(input.Page);
         output.PerPage.Should().Be(input.PerPage);
         output.Total.Should().Be(exampleGenre.Count);
+
+        //Aqui iteramos sobre os genres, ou seja cada Item representa um genre e tem varias categorias associadas a ele
         output.Items.Select(x=>x.Id).Should().BeEquivalentTo(exampleGenre.Select(x=>x.Id));
-        foreach (var item in output.Items)
+        output.Items.Select(x=>x.Name).Should().BeEquivalentTo(exampleGenre.Select(x=>x.Name));
+
+        // para cada categoria associada a um genre, verificamos se a categoria existe na lista de categorias de exemplo
+        foreach (var item in output.Items.SelectMany(x=>x.Categories))
         {
-            var outputItemCategoriesIds = item.Categories.Select(c => c.Id).ToList();
-            outputItemCategoriesIds.Should().BeEquivalentTo(exampleGenre.First(genre => genre.Id == item.Id).Categories.ToList().Select(id=>id));
+            var exampleCategory = exampleCategories.Find(x => x.Id == item.Id);
+            exampleCategory.Should().NotBeNull();
+            item.Id.Should().Be(exampleCategory!.Id);
+            item.Name.Should().Be(exampleCategory!.Name);
+
         }
 
     }

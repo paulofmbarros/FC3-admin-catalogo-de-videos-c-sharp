@@ -79,6 +79,12 @@ public class CategoryRepository : ICategoryRepository
         .Select(x => x.Id)
         .ToListAsync(cancellationToken);
 
+    public async Task<IReadOnlyList<Category>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken) =>
+        await this.Categories
+        .AsNoTracking()
+        .Where(x => ids.Contains(x.Id))
+        .ToListAsync(cancellationToken);
+
     private IQueryable<Category> AddOrderToQuery(IQueryable<Category> query, string orderProperty, SearchOrder order)
        => (orderProperty.ToLower(), order) switch
         {

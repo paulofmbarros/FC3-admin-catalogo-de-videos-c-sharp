@@ -13,4 +13,6 @@ using SeedWork.SearchableRepository;
 public interface ICategoryRepository : IGenericRepository<Category>, ISearchableRepository<Category>
 {
     public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
+
+    public Task<IReadOnlyList<Category>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken);
 }
