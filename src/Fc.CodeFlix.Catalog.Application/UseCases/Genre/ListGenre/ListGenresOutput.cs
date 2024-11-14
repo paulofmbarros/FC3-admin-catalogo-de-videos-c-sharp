@@ -27,7 +27,7 @@ public class ListGenresOutput(int page, int perPage, int total, IReadOnlyList<Ge
         {
             foreach (var categoryOutput in item.Categories)
             {
-                var category = categories.FirstOrDefault(c => c.Id == categoryOutput.Id);
+                var category = categories?.FirstOrDefault(c => c.Id == categoryOutput.Id);
                 if (category != null)
                 {
                     categoryOutput.Name = category.Name;

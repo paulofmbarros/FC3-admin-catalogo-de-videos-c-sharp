@@ -31,10 +31,14 @@ public class ListGenres : IListGenres
             .Distinct()
             .ToList();
 
-        var categories = await this.categoryRepository.GetListByIds(relatedCategoriesIds, cancellationToken);
-
-
         var output = ListGenresOutput.FromSearchOutput(searchOutput);
+
+        if (relatedCategoriesIds.Count == 0)
+        {
+            return output;
+        }
+
+        var categories = await this.categoryRepository.GetListByIds(relatedCategoriesIds, cancellationToken);
 
         output.FillWithCategoryNames(categories);
 
