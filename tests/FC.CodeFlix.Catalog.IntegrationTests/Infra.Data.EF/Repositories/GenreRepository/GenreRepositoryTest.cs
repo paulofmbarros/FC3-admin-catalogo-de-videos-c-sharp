@@ -633,7 +633,7 @@ public class GenreRepositoryTest
     [InlineData("createdAt","desc")]
     public async Task SearchOrdered(string orderBy, string order)
     {
-        CodeflixCatalogDbContext dbContext = this.fixture.CreateDbContext();
+        var dbContext = this.fixture.CreateDbContext();
         var examplegenresList = this.fixture.GetExampleGenresList(10);
         await dbContext.AddRangeAsync(examplegenresList);
         await dbContext.SaveChangesAsync(CancellationToken.None);
@@ -651,7 +651,6 @@ public class GenreRepositoryTest
         output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
         output.CurrentPage.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
-
 
     }
 }

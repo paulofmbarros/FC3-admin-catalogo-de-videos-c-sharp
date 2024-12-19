@@ -13,9 +13,9 @@ using Fc.CodeFlix.Catalog.Domain.Entity;
 public class GenreUseCasesBaseFixture : BaseFixture
 {
     public bool GetRandomBoolean() => this.Faker.Random.Bool();
-    public Genre GetExampleGenre()
+    public Genre GetExampleGenre(string name = "")
     {
-        var category = new Genre(this.GetGenreName(),
+        var category = new Genre(string.IsNullOrEmpty(name) ? this.GetGenreName() : name,
             this.GetRandomBoolean());
         return category;
     }
@@ -74,4 +74,8 @@ public class GenreUseCasesBaseFixture : BaseFixture
 
         return categoryDescription;
     }
+
+    public List<Genre> GetExampleGenreListByNames(List<string> names)
+        => names.Select(name => this.GetExampleGenre( name)).ToList();
+
 }
