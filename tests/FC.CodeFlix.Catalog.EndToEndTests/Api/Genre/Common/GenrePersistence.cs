@@ -9,6 +9,7 @@ namespace FC.CodeFlix.Catalog.EndToEndTests.Api.Genre.Common;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Infra.Data.EF;
 using Infra.Data.EF.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class GenrePersistence(CodeflixCatalogDbContext dbContext)
 {
@@ -25,4 +26,13 @@ public class GenrePersistence(CodeflixCatalogDbContext dbContext)
         await this.dbContext.GenresCategories.AddRangeAsync(genresCategories);
         await this.dbContext.SaveChangesAsync();
     }
+
+    public async Task<Genre?> GetById(Guid genreId) =>
+        await this.dbContext.Genres.AsNoTracking().FirstOrDefaultAsync(x=>x.Id == genreId);
+
+    public async Task<List<GenresCategories>> GetGenresCategoriesRelationsByGenreId(Guid targetGenreId)
+        => await this.dbContext.GenresCategories
+            .AsNoTracking()
+            .Where(x=>x.GenreId == targetGenreId)
+            .ToListAsync();
 }
