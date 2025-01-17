@@ -4,10 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Enum;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.CastMember.DeleteCastMember;
 
-public enum CastMemberType
+using Common;
+
+[CollectionDefinition(nameof(DeleteCastMemberTestFixture))]
+public class DeleteCastMemberTestFixtureCollection : ICollectionFixture<DeleteCastMemberTestFixture>
 {
-    Director = 1,
-    Actor = 2
+
+}
+
+public class DeleteCastMemberTestFixture : CastMemberUseCasesBaseFixture
+{
+    
 }

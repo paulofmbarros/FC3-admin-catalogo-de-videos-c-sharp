@@ -4,10 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Enum;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 
-public enum CastMemberType
+using MediatR;
+
+public class DeleteCastMemberInput(Guid id) : IRequest<Unit>
 {
-    Director = 1,
-    Actor = 2
+    public Guid Id { get; private set; } = id;
 }

@@ -4,10 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Enum;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 
-public enum CastMemberType
+using Category.Common;
+using MediatR;
+
+public interface IDeleteCastMember : IRequestHandler<DeleteCastMemberInput, Unit>
 {
-    Director = 1,
-    Actor = 2
+    
 }

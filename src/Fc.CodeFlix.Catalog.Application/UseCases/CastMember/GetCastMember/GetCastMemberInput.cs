@@ -4,10 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Enum;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.CastMember.GetCastMember;
 
-public enum CastMemberType
+using Common;
+using MediatR;
+
+public class GetCastMemberInput(Guid id) : IRequest<CastMemberModelOutput>
 {
-    Director = 1,
-    Actor = 2
+    public Guid Id { get; set; } = id;
 }

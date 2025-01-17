@@ -4,10 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Enum;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.CastMember.GetCastMember;
 
-public enum CastMemberType
+using Common;
+[CollectionDefinition(nameof(GetCastMemberTestFixture))]
+public class GetCastMemberTestFixtureCollection : ICollectionFixture<GetCastMemberTestFixture>
 {
-    Director = 1,
-    Actor = 2
+
+}
+
+public class GetCastMemberTestFixture : CastMemberUseCasesBaseFixture
+{
+    
 }

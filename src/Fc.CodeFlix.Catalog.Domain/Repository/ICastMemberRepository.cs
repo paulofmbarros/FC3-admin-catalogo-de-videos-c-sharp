@@ -4,10 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Enum;
+namespace Fc.CodeFlix.Catalog.Domain.Repository;
 
-public enum CastMemberType
+using Entity;
+using SeedWork;
+using SeedWork.SearchableRepository;
+
+public interface ICastMemberRepository : IGenericRepository<CastMember>
 {
-    Director = 1,
-    Actor = 2
+    
 }
