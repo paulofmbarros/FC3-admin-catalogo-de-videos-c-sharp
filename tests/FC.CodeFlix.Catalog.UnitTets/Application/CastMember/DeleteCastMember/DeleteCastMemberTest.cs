@@ -6,6 +6,7 @@
 
 namespace FC.CodeFlix.Catalog.UnitTets.Application.CastMember.DeleteCastMember;
 
+using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.Interfaces;
 using Fc.CodeFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using Fc.CodeFlix.Catalog.Domain.Entity;
@@ -43,6 +44,26 @@ public class DeleteCastMemberTest(DeleteCastMemberTestFixture fixture)
             Times.Once());
 
         unitOfWorkRepository.Verify(x =>x.Commit(It.IsAny<CancellationToken>()), Times.Once());
+    }
+
+    [Fact(DisplayName = (nameof(DeleteThrowsWhenNotFound)))]
+    [Trait("Application", "CreateCastMember - Use Cases")]
+    public async Task DeleteThrowsWhenNotFound()
+    {
+        // Arrange
+        var castMember = fixture.GetExampleCastMember();
+        var repositoryMock = new Mock<ICastMemberRepository>();
+        repositoryMock.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new NotFoundException("Not Found"));
+
+        var input = new DeleteCastMemberInput(castMember.Id);
+        var useCase = new DeleteCastMember(repositoryMock.Object, Mock.Of<IUnitOfWork>());
+
+        // Act
+        var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+        // Assert
+        await action.Should().ThrowAsync<NotFoundException>();
     }
 
 }

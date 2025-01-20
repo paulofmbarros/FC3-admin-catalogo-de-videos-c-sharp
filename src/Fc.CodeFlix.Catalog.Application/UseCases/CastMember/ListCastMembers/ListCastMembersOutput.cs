@@ -4,13 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.CastMember.ListCastMembers;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using Application.Common;
+using Common;
+using Domain.Entity;
 
-public interface ICastMemberRepository : IGenericRepository<CastMember>, ISearchableRepository<CastMember>
-{
-    
-}
+public class ListCastMembersOutput(int page, int perPage, int total, IReadOnlyList<CastMemberModelOutput> items)
+    : PaginatedListOutput<CastMemberModelOutput>(page, perPage, total, items);

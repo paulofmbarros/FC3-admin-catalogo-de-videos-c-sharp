@@ -4,13 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.CastMember.ListCastMembers;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using MediatR;
 
-public interface ICastMemberRepository : IGenericRepository<CastMember>, ISearchableRepository<CastMember>
+public interface IListCastMember : IRequestHandler<ListCastMembersInput, ListCastMembersOutput>
 {
-    
+
 }

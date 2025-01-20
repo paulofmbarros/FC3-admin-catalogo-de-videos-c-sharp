@@ -4,13 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.CastMember.UpdateCastMember;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using Common;
 
-public interface ICastMemberRepository : IGenericRepository<CastMember>, ISearchableRepository<CastMember>
+[CollectionDefinition(nameof(UpdateCastMemberTestFixture))]
+public class UpdateCastMemberTestFixtureCollection : ICollectionFixture<UpdateCastMemberTestFixture>
+{
+
+}
+
+public class UpdateCastMemberTestFixture : CastMemberUseCasesBaseFixture
 {
     
 }
