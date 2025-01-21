@@ -58,4 +58,40 @@ public class ListCastMembersTest(ListCastMembersTestFixture fixture)
 
     }
 
+    [Fact(DisplayName = nameof(ReturnsEmptyWhenIsEmpty))]
+    [Trait("Application", "CreateCastMember - Use Cases")]
+    public async Task ReturnsEmptyWhenIsEmpty()
+    {
+        // Arrange
+        var castMembers = new List<CastMember>();
+        var searchOutput = new SearchOutput<CastMember>(1, 10, castMembers.Count, castMembers);
+        var repositoryMock = new Mock<ICastMemberRepository>();
+        repositoryMock.Setup(x => x.Search(It.IsAny<SearchInput>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(searchOutput);
+        var input = new ListCastMembersInput(1, 10, "", "", SearchOrder.Asc);
+
+        var useCase = new ListCastMembers(repositoryMock.Object);
+
+        // Act
+        var result = await useCase.Handle(input,CancellationToken.None);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.PerPage.Should().Be(input.PerPage);
+        result.Page.Should().Be(input.Page);
+        result.Total.Should().Be(searchOutput.Total);
+        result.Items.Should().HaveCount(0);
+
+        repositoryMock.Verify(x=>x.Search(It.Is<SearchInput>(x=> x.Page == input.Page
+                                                                 && x.PerPage == input.PerPage
+                                                                 && x.Order == input.Direction
+                                                                 && x.OrderBy == input.Sort
+                                                                 && x.Search == input.Search
+            ), It.IsAny<CancellationToken>()),
+            Times.Once);
+
+
+
+    }
+
 }

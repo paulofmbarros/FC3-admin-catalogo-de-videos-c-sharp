@@ -14,13 +14,9 @@ public class ListCastMembers(ICastMemberRepository repository) : IListCastMember
 {
     public async Task<ListCastMembersOutput> Handle(ListCastMembersInput request, CancellationToken cancellationToken)
     {
-       var searchOutput = await repository.Search(new SearchInput(request.Page, request.PerPage, request.Search, request.Sort, request.Direction), cancellationToken);
+       var searchOutput = await repository.Search(request.ToSearchInput(), cancellationToken);
 
-         return new ListCastMembersOutput(searchOutput.CurrentPage,
-             searchOutput.PerPage,
-             searchOutput.Total,
-             searchOutput.Items.Select(castMember => (CastMemberModelOutput)castMember)
-                 .ToList());
+        return ListCastMembersOutput.FromSearchOutput(searchOutput);
 
     }
 }

@@ -16,6 +16,7 @@ public class CodeflixCatalogDbContext : DbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
+    public DbSet<CastMember> CastMembers => Set<CastMember>();
 
     public CodeflixCatalogDbContext(DbContextOptions<CodeflixCatalogDbContext> options) : base(options)
     {
