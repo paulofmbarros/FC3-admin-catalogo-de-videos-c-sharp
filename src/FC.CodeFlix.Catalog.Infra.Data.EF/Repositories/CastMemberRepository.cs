@@ -30,7 +30,39 @@ public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMem
     public Task Delete(CastMember aggregate, CancellationToken cancellationToken)  =>
         Task.FromResult(this.CastMembers.Remove(aggregate));
 
-    public Task Update(CastMember aggregate, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public Task Update(CastMember aggregate, CancellationToken cancellationToken) =>
+        Task.FromResult(this.CastMembers.Update(aggregate));
 
-    public Task<SearchOutput<CastMember>> Search(SearchInput searchInput, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<SearchOutput<CastMember>> Search(SearchInput searchInput, CancellationToken cancellationToken)
+    {
+        var query = this.CastMembers.AsQueryable();
+
+        if (string.IsNullOrWhiteSpace(searchInput.Search) is false)
+        {
+            query = query.Where(x => x.Name.Contains(searchInput.Search));
+        }
+
+        query = this.AddOrderToQuery(query, searchInput.OrderBy, searchInput.Order);
+
+        var data = await query
+            .Skip(searchInput.PerPage * (searchInput.Page - 1))
+            .Take(searchInput.PerPage)
+            .ToListAsync(cancellationToken);
+
+        var total = await query.CountAsync(cancellationToken);
+
+        return new SearchOutput<CastMember>(searchInput.Page,searchInput.PerPage, total, data);
+    }
+
+    private IQueryable<CastMember> AddOrderToQuery(IQueryable<CastMember> query, string orderProperty, SearchOrder order)
+        => (orderProperty.ToLower(), order) switch
+        {
+            ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name).ThenBy(x=>x.Id),
+            ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x=>x.Id),
+            ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
+            ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
+            ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
+            ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
+            _ => query.OrderBy(x => x.Name).ThenBy(x=>x.Id),
+        };
 }

@@ -34,4 +34,7 @@ public class CastMemberRepositoryTestFixture : BaseFixture
 
         return castMembers;
     }
+
+    public List<CastMember> GetExampleCastMembersListByNames(List<string> names)=>
+        names.Select(name => new CastMember(name, this.GetRandomCastMemberType())).ToList();
 }
