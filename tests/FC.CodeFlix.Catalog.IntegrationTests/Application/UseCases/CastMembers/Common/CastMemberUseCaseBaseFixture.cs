@@ -4,20 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.CastMembersRepository;
+namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.CastMembers.Common;
 
 using Base;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Enum;
 using Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-
-[CollectionDefinition(nameof(CastMemberRepositoryTestFixture))]
-public class CastMemberRepositoryTestFixtureCollection : ICollectionFixture<CastMemberRepositoryTestFixture>
+[CollectionDefinition(nameof(CastMemberUseCaseBaseFixture))]
+public class CastMemberUseCaseBaseFixtureCollection : ICollectionFixture<CastMemberUseCaseBaseFixture>
 {
-
 }
 
-public class CastMemberRepositoryTestFixture : BaseFixture
+public class CastMemberUseCaseBaseFixture : BaseFixture
 {
     public string GetValidName() => this.Faker.Name.FullName();
 
@@ -55,4 +53,5 @@ public class CastMemberRepositoryTestFixture : BaseFixture
 
         return orderedList.ToList();
     }
+    
 }

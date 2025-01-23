@@ -37,12 +37,12 @@ public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMem
     {
         var query = this.CastMembers.AsQueryable();
 
+        query = this.AddOrderToQuery(query, searchInput.OrderBy, searchInput.Order);
+
         if (string.IsNullOrWhiteSpace(searchInput.Search) is false)
         {
             query = query.Where(x => x.Name.Contains(searchInput.Search));
         }
-
-        query = this.AddOrderToQuery(query, searchInput.OrderBy, searchInput.Order);
 
         var data = await query
             .Skip(searchInput.PerPage * (searchInput.Page - 1))

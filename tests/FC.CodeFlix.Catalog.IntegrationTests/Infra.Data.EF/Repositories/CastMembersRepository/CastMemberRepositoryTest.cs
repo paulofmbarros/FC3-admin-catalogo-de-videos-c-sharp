@@ -110,8 +110,10 @@ public class CastMemberRepositoryTest
         await context.SaveChangesAsync();
         exampleCastMember.Update(newName, newType);
 
-        var repository = new CastMemberRepository(this.fixture.CreateDbContext(true));
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new CastMemberRepository(actDbContext);
         await repository.Update(exampleCastMember, CancellationToken.None);
+        await actDbContext.SaveChangesAsync();
 
         var assertDbContext = this.fixture.CreateDbContext(true);
 
@@ -242,6 +244,38 @@ public class CastMemberRepositoryTest
             resultItem.Type.Should().Be(exampleCastMember.Type);
 
         });
+
+    }
+
+    [Theory(DisplayName = nameof(OrderedSearch))]
+    [Trait("Integration/Infra.Data", "CastMemberRepository - Repositories")]
+    [InlineData("name","asc")]
+    [InlineData("name","desc")]
+    [InlineData("id","desc")]
+    [InlineData("id","asc")]
+    [InlineData("createdAt","asc")]
+    [InlineData("createdAt","desc")]
+    public async Task OrderedSearch(string orderBy, string order)
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleCastMemberList = this.fixture.GetExampleCastMembersList(10);
+        await dbContext.AddRangeAsync(exampleCastMemberList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+        var repository = new CastMemberRepository(dbContext);
+        var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+        var searchInput = new SearchInput(1,20, "", orderBy, searchOrder);
+
+
+        var output = await repository.Search(searchInput, CancellationToken.None);
+        var expectedOrderedList = this.fixture.CloneCastMembersListOrdered(exampleCastMemberList, orderBy, searchOrder);
+
+        output.Should().NotBeNull();
+        output.Total.Should().Be(exampleCastMemberList.Count);
+        output.Items.Should().HaveCount(exampleCastMemberList.Count);
+        output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
+        output.CurrentPage.Should().Be(searchInput.Page);
+        output.PerPage.Should().Be(searchInput.PerPage);
+
 
     }
 
