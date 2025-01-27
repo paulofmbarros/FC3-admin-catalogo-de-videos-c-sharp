@@ -61,8 +61,8 @@ public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMem
             ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x=>x.Id),
             ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
             ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
-            ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
-            ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
+            ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt).ThenBy(x=>x.Name),
+            ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt).ThenByDescending(x=>x.Name),
             _ => query.OrderBy(x => x.Name).ThenBy(x=>x.Id),
         };
 }

@@ -11,4 +11,9 @@ using Domain.SeedWork.SearchableRepository;
 using MediatR;
 
 public class ListCastMembersInput(int page, int perPage, string search, string sort, SearchOrder direction)
-    : PaginatedListInput(page, perPage, search, sort, direction), IRequest<ListCastMembersOutput>;
+    : PaginatedListInput(page, perPage, search, sort, direction), IRequest<ListCastMembersOutput>
+{
+    public ListCastMembersInput() : this(1, 10, string.Empty, string.Empty, SearchOrder.Asc)
+    {
+    }
+}

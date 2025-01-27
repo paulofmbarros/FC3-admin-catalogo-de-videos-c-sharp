@@ -7,6 +7,7 @@
 namespace FC.CodeFlix.Catalog.EndToEndTests.Api.CastMembers.Common;
 
 using Base;
+using Extensions.DateTime;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Enum;
 using Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
@@ -55,8 +56,8 @@ public class CastMemberApiBaseFixture : BaseFixture
             ("name", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Name).ThenByDescending(x=>x.Id),
             ("id", SearchOrder.Asc) => listCloned.OrderBy(x => x.Id),
             ("id", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Id),
-            ("createdat", SearchOrder.Asc) => listCloned.OrderBy(x => x.CreatedAt),
-            ("createdat", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.CreatedAt),
+            ("createdat", SearchOrder.Asc) => listCloned.OrderBy(x => x.CreatedAt).ThenBy(x=>x.Name),
+            ("createdat", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.CreatedAt).ThenByDescending(x=>x.Name),
             _ => listCloned.OrderBy(x => x.Name).ThenBy(x=>x.Id)
         };
 
