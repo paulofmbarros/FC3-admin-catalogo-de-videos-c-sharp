@@ -55,4 +55,73 @@ public class VideoValidatorTest
         notificationValidationHandler.Errors.First().Message.Should().Be("Title should be less or equal 255 characters long.");
 
     }
+
+    [Fact(DisplayName = nameof(ReturnsErrorWhenTitleIsEmpty))]
+    [Trait("Domain", "Video Validator - Validators")]
+    public void ReturnsErrorWhenTitleIsEmpty()
+    {
+        var invalidVideo = new Video(
+            "",
+            this.fixture.GetValidDescription(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetValidYearLaunched(),
+            this.fixture.GetValidDuration()
+        );
+        var notificationValidationHandler = new NotificationValidationHandler();
+
+        var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
+        videoValidator.Validate();
+
+        notificationValidationHandler.HasErrors().Should().BeTrue();
+        notificationValidationHandler.Errors.Should().HaveCount(1);
+        notificationValidationHandler.Errors.First().Message.Should().Be("Title should not be empty.");
+
+    }
+
+    [Fact(DisplayName = nameof(ReturnsErrorWhenDescriptionIsEmpty))]
+    [Trait("Domain", "Video Validator - Validators")]
+    public void ReturnsErrorWhenDescriptionIsEmpty()
+    {
+        var invalidVideo = new Video(
+            this.fixture.GetValidTitle(),
+            string.Empty,
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetValidYearLaunched(),
+            this.fixture.GetValidDuration()
+        );
+        var notificationValidationHandler = new NotificationValidationHandler();
+
+        var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
+        videoValidator.Validate();
+
+        notificationValidationHandler.HasErrors().Should().BeTrue();
+        notificationValidationHandler.Errors.Should().HaveCount(1);
+        notificationValidationHandler.Errors.First().Message.Should().Be("Description should not be empty.");
+
+    }
+    [Fact(DisplayName = nameof(ReturnsErrorWhenDescriptionIsTooLong))]
+    [Trait("Domain", "Video Validator - Validators")]
+    public void ReturnsErrorWhenDescriptionIsTooLong()
+    {
+        var invalidVideo = new Video(
+            this.fixture.GetValidTitle(),
+            this.fixture.GetTooLongDescription(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetValidYearLaunched(),
+            this.fixture.GetValidDuration()
+        );
+        var notificationValidationHandler = new NotificationValidationHandler();
+
+        var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
+        videoValidator.Validate();
+
+        notificationValidationHandler.HasErrors().Should().BeTrue();
+        notificationValidationHandler.Errors.Should().HaveCount(1);
+        notificationValidationHandler.Errors.First().Message.Should().Be("Description should be less or equal 4000 characters long.");
+
+    }
+
 }

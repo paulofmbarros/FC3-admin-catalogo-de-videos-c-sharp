@@ -6,10 +6,15 @@
 
 namespace Fc.CodeFlix.Catalog.Domain.Exceptions;
 
+using Validation;
+
 public class EntityValidationException : Exception
 {
-    public EntityValidationException(string? message) : base(message)
+    public IReadOnlyCollection<ValidationError> Errors { get; }
+
+    public EntityValidationException(string? message, IReadOnlyCollection<ValidationError>? errors = null ) : base(message)
     {
+        Errors = errors ?? new List<ValidationError>();
     }
     
 }

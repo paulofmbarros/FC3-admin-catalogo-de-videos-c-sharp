@@ -26,9 +26,20 @@ public class VideoTestFixture : BaseFixture
         this.GetValidDuration()
     );
 
+    public Video GetInvalidVideo() => new Video(
+        this.GetTooLongTitle(),
+        this.GetTooLongDescription(),
+        this.GetRandomBoolean(),
+        this.GetRandomBoolean(),
+        this.GetValidYearLaunched(),
+        this.GetValidDuration()
+    );
+
+
     public string GetValidTitle() => this.Faker.Lorem.Letter(100);
 
     public string GetValidDescription() => this.Faker.Commerce.ProductDescription();
+    public string GetTooLongDescription() => this.Faker.Lorem.Letter(4_001);
 
     public int GetValidYearLaunched()=> this.Faker.Date.BetweenDateOnly(new DateOnly(1960,1,1), new DateOnly(2022,1,1)).Year;
 
