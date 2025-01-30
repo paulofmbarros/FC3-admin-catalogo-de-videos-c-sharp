@@ -6,6 +6,7 @@
 
 namespace Fc.CodeFlix.Catalog.Domain.Entity;
 
+using Enum;
 using Exceptions;
 using SeedWork;
 using Validation;
@@ -20,9 +21,11 @@ public class Video : AggregateRoot
     public int YearLaunched { get; set; }
     public int Duration { get; set; }
 
+    public Rating Rating { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
-    public Video(string title, string description, bool opened, bool published, int yearLaunched, int duration)
+    public Video(string title, string description, bool opened, bool published, int yearLaunched, int duration, Rating rating)
     {
         this.Title = title;
         this.Description = description;
@@ -31,6 +34,7 @@ public class Video : AggregateRoot
         this.YearLaunched = yearLaunched;
         this.Duration = duration;
         this.CreatedAt = DateTime.Now;
+        this.Rating = rating;
     }
 
     public void Validate(ValidationHandler validationHandler)

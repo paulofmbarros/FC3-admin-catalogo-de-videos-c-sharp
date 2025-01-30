@@ -43,7 +43,8 @@ public class VideoValidatorTest
             this.fixture.GetRandomBoolean(),
             this.fixture.GetRandomBoolean(),
             this.fixture.GetValidYearLaunched(),
-            this.fixture.GetValidDuration()
+            this.fixture.GetValidDuration(),
+            this.fixture.GetValidRating()
             );
         var notificationValidationHandler = new NotificationValidationHandler();
 
@@ -66,7 +67,8 @@ public class VideoValidatorTest
             this.fixture.GetRandomBoolean(),
             this.fixture.GetRandomBoolean(),
             this.fixture.GetValidYearLaunched(),
-            this.fixture.GetValidDuration()
+            this.fixture.GetValidDuration(),
+            this.fixture.GetValidRating()
         );
         var notificationValidationHandler = new NotificationValidationHandler();
 
@@ -89,7 +91,8 @@ public class VideoValidatorTest
             this.fixture.GetRandomBoolean(),
             this.fixture.GetRandomBoolean(),
             this.fixture.GetValidYearLaunched(),
-            this.fixture.GetValidDuration()
+            this.fixture.GetValidDuration(),
+            this.fixture.GetValidRating()
         );
         var notificationValidationHandler = new NotificationValidationHandler();
 
@@ -111,7 +114,8 @@ public class VideoValidatorTest
             this.fixture.GetRandomBoolean(),
             this.fixture.GetRandomBoolean(),
             this.fixture.GetValidYearLaunched(),
-            this.fixture.GetValidDuration()
+            this.fixture.GetValidDuration(),
+            this.fixture.GetValidRating()
         );
         var notificationValidationHandler = new NotificationValidationHandler();
 

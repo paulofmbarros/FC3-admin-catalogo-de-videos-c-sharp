@@ -7,6 +7,7 @@
 namespace FC.CodeFlix.Catalog.UnitTets.Domain.Entity.Video;
 
 using Fc.CodeFlix.Catalog.Domain.Entity;
+using Fc.CodeFlix.Catalog.Domain.Enum;
 using Fc.CodeFlix.Catalog.Domain.Exceptions;
 using Fc.CodeFlix.Catalog.Domain.Validation;
 using FluentAssertions;
@@ -28,6 +29,7 @@ public class VideoTest
         var expectedPublished = this.fixture.GetRandomBoolean();
         var expectedYearLaunched = this.fixture.GetValidYearLaunched();
         var expectedDuration = this.fixture.GetValidDuration();
+        var expectedRating = Rating.Er;
 
 
         var video = new Video(
@@ -36,7 +38,8 @@ public class VideoTest
             expectedOpened,
             expectedPublished,
             expectedYearLaunched,
-            expectedDuration
+            expectedDuration,
+            expectedRating
         );
 
         video.Title.Should().Be(expectedTitle);

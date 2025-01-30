@@ -8,6 +8,7 @@ namespace FC.CodeFlix.Catalog.UnitTets.Domain.Entity.Video;
 
 using Common;
 using Fc.CodeFlix.Catalog.Domain.Entity;
+using Fc.CodeFlix.Catalog.Domain.Enum;
 
 [CollectionDefinition(nameof(VideoTestFixture))]
 public class VideoTestFixtureCollection : ICollectionFixture<VideoTestFixture>
@@ -23,7 +24,8 @@ public class VideoTestFixture : BaseFixture
         this.GetRandomBoolean(),
         this.GetRandomBoolean(),
         this.GetValidYearLaunched(),
-        this.GetValidDuration()
+        this.GetValidDuration(),
+        this.GetValidRating()
     );
 
     public Video GetInvalidVideo() => new Video(
@@ -32,7 +34,8 @@ public class VideoTestFixture : BaseFixture
         this.GetRandomBoolean(),
         this.GetRandomBoolean(),
         this.GetValidYearLaunched(),
-        this.GetValidDuration()
+        this.GetValidDuration(),
+        this.GetValidRating()
     );
 
 
@@ -46,4 +49,10 @@ public class VideoTestFixture : BaseFixture
     public int GetValidDuration() => new Random().Next(100, 200);
 
     public string GetTooLongTitle()=> this.Faker.Lorem.Letter(400);
+
+    public Rating GetValidRating()
+    {
+        var possibleValues = Enum.GetValues<Rating>();
+        return possibleValues[new Random().Next(possibleValues.Length)];
+    }
 }
