@@ -45,7 +45,7 @@ public class VideoValidator : Validator
 
         if (string.IsNullOrWhiteSpace(this.video.Title))
         {
-            this.Handler.HandleError($"{nameof(this.video.Title)} should not be empty.");
+            this.Handler.HandleError($"{nameof(this.video.Title)} should not be null or empty.");
         }
     }
 }

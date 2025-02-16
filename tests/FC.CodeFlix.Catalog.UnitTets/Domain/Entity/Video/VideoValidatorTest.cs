@@ -77,7 +77,7 @@ public class VideoValidatorTest
 
         notificationValidationHandler.HasErrors().Should().BeTrue();
         notificationValidationHandler.Errors.Should().HaveCount(1);
-        notificationValidationHandler.Errors.First().Message.Should().Be("Title should not be empty.");
+        notificationValidationHandler.Errors.First().Message.Should().Be("Title should not be null or empty.");
 
     }
 
