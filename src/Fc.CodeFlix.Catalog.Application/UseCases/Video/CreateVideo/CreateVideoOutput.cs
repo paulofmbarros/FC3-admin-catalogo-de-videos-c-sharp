@@ -6,9 +6,11 @@
 
 namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.CreateVideo;
 
+using Domain.Entity;
 using Domain.Enum;
 
-public record CreateVideoOutput(Guid Id,
+public record CreateVideoOutput(
+    Guid Id,
     DateTime CreatedAt,
     string Title,
     bool Published,
@@ -16,4 +18,16 @@ public record CreateVideoOutput(Guid Id,
     Rating Rating,
     int YearLaunched,
     bool Opened,
-    int Duration);
+    int Duration)
+{
+    public static CreateVideoOutput FromVideo(Video video) => new CreateVideoOutput(
+        video.Id,
+        video.CreatedAt,
+        video.Title,
+        video.Published,
+        video.Description,
+        video.Rating,
+        video.YearLaunched,
+        video.Opened,
+        video.Duration);
+}

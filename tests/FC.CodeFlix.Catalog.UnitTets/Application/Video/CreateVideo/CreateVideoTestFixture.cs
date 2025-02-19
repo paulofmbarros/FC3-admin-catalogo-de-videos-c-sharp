@@ -19,12 +19,14 @@ public class CreateVideoTestFixtureCollection : ICollectionFixture<CreateVideoTe
 
 public class CreateVideoTestFixture : VideoTestFixtureBase
 {
-        public CreateVideoInput CreateValidCreateVideoInput() => new CreateVideoInput(
-        string.Empty,
+        public CreateVideoInput CreateValidCreateVideoInput(List<Guid>? categoriesIds = null) => new CreateVideoInput(
+        this.GetValidTitle(),
         this.GetValidDescription(),
         this.GetValidYearLaunched(),
         this.GetRandomBoolean(),
         this.GetRandomBoolean(),
         this.GetValidDuration(),
-        this.GetValidRating());
+        this.GetValidRating(),
+        categoriesIds
+        );
 }

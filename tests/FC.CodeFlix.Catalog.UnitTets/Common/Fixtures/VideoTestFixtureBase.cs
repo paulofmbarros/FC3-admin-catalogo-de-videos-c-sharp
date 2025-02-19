@@ -33,7 +33,6 @@ public abstract class VideoTestFixtureBase : BaseFixture
 
 
     public string GetValidTitle() => this.Faker.Lorem.Letter(100);
-
     public string GetValidDescription() => this.Faker.Commerce.ProductDescription();
     public string GetTooLongDescription() => this.Faker.Lorem.Letter(4_001);
 
