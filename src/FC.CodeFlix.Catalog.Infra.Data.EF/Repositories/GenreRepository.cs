@@ -116,6 +116,8 @@ public class GenreRepository : IGenreRepository
         return new SearchOutput<Genre>( searchInput.Page, searchInput.PerPage, total, genres);
     }
 
+    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
+
 
     private IQueryable<Genre> AddOrderToQuery(IQueryable<Genre> query, string orderProperty, SearchOrder order)
         => (orderProperty.ToLower(), order) switch

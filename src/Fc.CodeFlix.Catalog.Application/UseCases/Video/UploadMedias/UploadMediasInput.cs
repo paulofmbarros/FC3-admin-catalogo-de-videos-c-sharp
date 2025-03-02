@@ -4,13 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.UploadMedias;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
+using Common;
+using MediatR;
 
-public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre>
-{
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
-}
+public record UploadMediasInput(Guid VideoId, FileInput? VideoFile, FileInput? TrailerFile) : IRequest<Unit>;

@@ -54,6 +54,8 @@ public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMem
         return new SearchOutput<CastMember>(searchInput.Page,searchInput.PerPage, total, data);
     }
 
+    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
+
     private IQueryable<CastMember> AddOrderToQuery(IQueryable<CastMember> query, string orderProperty, SearchOrder order)
         => (orderProperty.ToLower(), order) switch
         {

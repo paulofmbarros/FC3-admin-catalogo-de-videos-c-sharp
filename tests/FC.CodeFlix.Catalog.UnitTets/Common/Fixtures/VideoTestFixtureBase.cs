@@ -6,6 +6,8 @@
 
 namespace FC.CodeFlix.Catalog.UnitTets.Common.Fixtures;
 
+using System.Text;
+using Fc.CodeFlix.Catalog.Application.UseCases.Video.Common;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Enum;
 
@@ -65,4 +67,20 @@ public abstract class VideoTestFixtureBase : BaseFixture
     }
 
     public Media GetValidMedia() => new Media(this.GetValidMediaPath());
+
+    public FileInput GetImageValidFileInput()
+    {
+        var exampleStream = new MemoryStream(Encoding.ASCII.GetBytes("test"));
+        var fileInput = new FileInput("jpg", exampleStream);
+
+        return fileInput;
+    }
+
+    public FileInput GetMediaValidFileInput()
+    {
+        var exampleStream = new MemoryStream(Encoding.ASCII.GetBytes("test"));
+        var fileInput = new FileInput("mp4", exampleStream);
+
+        return fileInput;
+    }
 }

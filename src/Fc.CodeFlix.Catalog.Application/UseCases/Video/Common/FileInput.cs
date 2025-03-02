@@ -4,13 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.Common;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
-
-public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre>
-{
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
-}
+public record FileInput(string Extension, Stream FileStream);

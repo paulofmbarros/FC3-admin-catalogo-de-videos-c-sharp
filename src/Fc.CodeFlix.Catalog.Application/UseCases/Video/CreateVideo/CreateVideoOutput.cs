@@ -18,9 +18,16 @@ public record CreateVideoOutput(
     Rating Rating,
     int YearLaunched,
     bool Opened,
-    int Duration)
+    int Duration,
+    IReadOnlyCollection<Guid> CategoriesIds,
+    IReadOnlyCollection<Guid> GenresIds,
+    IReadOnlyCollection<Guid> CastMembersIds,
+    string? Thumb,
+    string? Banner,
+    string? ThumbHalf
+    )
 {
-    public static CreateVideoOutput FromVideo(Video video) => new CreateVideoOutput(
+    public static CreateVideoOutput FromVideo(Video video) => new (
         video.Id,
         video.CreatedAt,
         video.Title,
@@ -29,5 +36,11 @@ public record CreateVideoOutput(
         video.Rating,
         video.YearLaunched,
         video.Opened,
-        video.Duration);
+        video.Duration,
+        video.Categories,
+        video.Genres,
+        video.CastMembers,
+        video.Thumb?.Path,
+        video.Banner?.Path,
+        video.ThumbHalf?.Path);
 }

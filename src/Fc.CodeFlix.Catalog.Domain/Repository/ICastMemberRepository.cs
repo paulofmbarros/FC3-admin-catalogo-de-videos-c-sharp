@@ -12,5 +12,6 @@ using SeedWork.SearchableRepository;
 
 public interface ICastMemberRepository : IGenericRepository<CastMember>, ISearchableRepository<CastMember>
 {
+    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
     
 }

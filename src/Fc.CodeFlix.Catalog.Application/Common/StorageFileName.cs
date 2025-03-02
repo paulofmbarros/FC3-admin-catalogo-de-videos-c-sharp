@@ -4,13 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.Common;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
-
-public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre>
+public static class StorageFileName
 {
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
+    public static string Create(Guid id, string propertyName, string extension) =>
+        $"{id}-{propertyName.ToLower()}.{extension}";
 }

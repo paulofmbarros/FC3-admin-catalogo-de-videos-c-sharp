@@ -4,13 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Domain.Repository;
+namespace Fc.CodeFlix.Catalog.Application.Interfaces;
 
-using Entity;
-using SeedWork;
-using SeedWork.SearchableRepository;
-
-public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre>
+public interface IStorageService
 {
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken);
+    Task<string> Upload(string fileName, Stream fileStream, CancellationToken cancellationToken);
+    Task Delete(string filePath, CancellationToken cancellationToken);
 }
