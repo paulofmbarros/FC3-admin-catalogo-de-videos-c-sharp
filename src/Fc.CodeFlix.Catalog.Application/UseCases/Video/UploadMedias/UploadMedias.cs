@@ -27,15 +27,35 @@ public class UploadMedias : IUploadMedias
 
     public async Task<Unit> Handle(UploadMediasInput input, CancellationToken cancellationToken)
     {
-
         var video = await this.videoRepository.Get(input.VideoId, cancellationToken);
 
-        await this.UploadVideo(input, cancellationToken, video);
-        await this.UploadTrailer(input, cancellationToken, video);
+        try
+        {
+            await this.UploadVideo(input, cancellationToken, video);
+            await this.UploadTrailer(input, cancellationToken, video);
 
-        await this.videoRepository.Update(video, cancellationToken);
-        await this.unitOfWork.Commit(cancellationToken);
-        return Unit.Value;
+            await this.videoRepository.Update(video, cancellationToken);
+            await this.unitOfWork.Commit(cancellationToken);
+            return Unit.Value;
+        }
+        catch (Exception e)
+        {
+            await this.ClearStorage(input, cancellationToken, video);
+            throw;
+        }
+    }
+
+    private async Task ClearStorage(UploadMediasInput input, CancellationToken cancellationToken, Video video)
+    {
+        if (input.VideoFile is not null && video.Media is not null)
+        {
+            await this.storageService.Delete(video.Media.FilePath, cancellationToken);
+        }
+
+        if (input.TrailerFile is not null && video.Trailer is not null)
+        {
+            await this.storageService.Delete(video.Trailer.FilePath, cancellationToken);
+        }
     }
 
     private async Task UploadTrailer(UploadMediasInput input, CancellationToken cancellationToken, Video video)

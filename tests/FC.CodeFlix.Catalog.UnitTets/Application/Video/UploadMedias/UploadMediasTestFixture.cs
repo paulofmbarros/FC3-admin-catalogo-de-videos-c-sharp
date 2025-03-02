@@ -22,6 +22,13 @@ public class UploadMediasTestFixtureCollection : ICollectionFixture<UploadMedias
 
 public class UploadMediasTestFixture : VideoTestFixtureBase
 {
-    public UploadMediasInput GetValidInput() => new UploadMediasInput(Guid.NewGuid(), this.GetMediaValidFileInput(), this.GetMediaValidFileInput());
+    public UploadMediasInput GetValidInput(Guid? videoId = null,
+        bool withVideoFile = true,
+        bool withTrailerFile = true
+        ) =>
+        new (
+            videoId?? Guid.NewGuid(),
+            withVideoFile ? this.GetMediaValidFileInput() : null,
+            withTrailerFile ? this.GetMediaValidFileInput() : null);
 
 }
