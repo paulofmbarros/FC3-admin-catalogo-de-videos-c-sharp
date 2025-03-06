@@ -26,7 +26,9 @@ public class CreateVideoTestFixture : VideoTestFixtureBase
                 List<Guid>? castMembersIds = null,
                 FileInput? thumb = null,
                 FileInput? banner = null,
-                FileInput? thumbHalf = null
+                FileInput? thumbHalf = null,
+                FileInput? media = null,
+                FileInput? trailer = null
                 ) => new (
         this.GetValidTitle(),
         this.GetValidDescription(),
@@ -40,10 +42,12 @@ public class CreateVideoTestFixture : VideoTestFixtureBase
         castMembersIds,
         thumb,
         banner,
-        thumbHalf
+        thumbHalf,
+        media,
+        trailer
         );
 
-        public CreateVideoInput CreateValidInputWithAllData() => new (
+        public CreateVideoInput CreateValidInputWithAllImages() => new (
                 this.GetValidTitle(),
                 this.GetValidDescription(),
                 this.GetValidYearLaunched(),
@@ -57,5 +61,23 @@ public class CreateVideoTestFixture : VideoTestFixtureBase
                 this.GetImageValidFileInput(),
                 this.GetImageValidFileInput(),
                 this.GetImageValidFileInput()
+        );
+
+        public CreateVideoInput CreateValidInputWithAllMedias()=> new (
+                this.GetValidTitle(),
+                this.GetValidDescription(),
+                this.GetValidYearLaunched(),
+                this.GetRandomBoolean(),
+                this.GetRandomBoolean(),
+                this.GetValidDuration(),
+                this.GetValidRating(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                this.GetMediaValidFileInput(),
+                this.GetMediaValidFileInput()
         );
 }

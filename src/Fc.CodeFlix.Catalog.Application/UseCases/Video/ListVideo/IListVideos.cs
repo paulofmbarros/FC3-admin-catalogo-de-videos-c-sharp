@@ -4,12 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.CreateVideo;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.ListVideo;
 
-using Common;
 using MediatR;
 
-public interface ICreateVideo : IRequestHandler<CreateVideoInput, VideoModelOutput>
+public interface IListVideos : IRequestHandler<ListVideosInput, ListVideosOutput>
 {
     
 }

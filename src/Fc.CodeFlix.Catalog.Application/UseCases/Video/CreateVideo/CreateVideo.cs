@@ -6,6 +6,8 @@
 
 namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.CreateVideo;
 
+using Application.Common;
+using Common;
 using Domain.Entity;
 using Domain.Exceptions;
 using Domain.Repository;
@@ -38,7 +40,7 @@ public class CreateVideo : ICreateVideo
         this.genreRepository = genreRepository;
     }
 
-    public async Task<CreateVideoOutput> Handle(CreateVideoInput input, CancellationToken cancellationToken)
+    public async Task<VideoModelOutput> Handle(CreateVideoInput input, CancellationToken cancellationToken)
     {
         var video = new Video(input.Title,
             input.Description,
@@ -61,12 +63,13 @@ public class CreateVideo : ICreateVideo
         try
         {
             await this.UploadImagesMedia(input, cancellationToken, video);
+            await this.UploadVideosMedia(input, cancellationToken, video);
 
 
             await this.videoRepository.Insert(video, cancellationToken);
             await this.unitOfWork.Commit(cancellationToken);
 
-            return CreateVideoOutput.FromVideo(video);
+            return VideoModelOutput.FromVideo(video);
         }
         catch (Exception e)
         {
@@ -76,7 +79,6 @@ public class CreateVideo : ICreateVideo
 
 
     }
-
     private async Task ClearStorage(CancellationToken cancellationToken, Video video)
     {
         if(video.Thumb is not null)
@@ -85,14 +87,20 @@ public class CreateVideo : ICreateVideo
             await this.storageService.Delete(video.ThumbHalf.Path, cancellationToken);
         if(video.Banner is not null)
             await this.storageService.Delete(video.Banner.Path, cancellationToken);
+        if(video.Media is not null)
+            await this.storageService.Delete(video.Media.FilePath, cancellationToken);
+        if(video.Trailer is not null)
+            await this.storageService.Delete(video.Trailer.FilePath, cancellationToken);
     }
 
     private async Task UploadImagesMedia(CreateVideoInput input, CancellationToken cancellationToken, Video video)
     {
         if (input.Thumb is not null)
         {
+            var fileName = StorageFileName.Create(video.Id, nameof(video.Thumb), input.Thumb.Extension);
+
             var thumbUrl = await this.storageService.Upload(
-                $"{video.Id}-thumb.{input.Thumb.Extension}",
+                fileName,
                 input.Thumb.FileStream,
                 cancellationToken);
 
@@ -100,8 +108,9 @@ public class CreateVideo : ICreateVideo
         }
         if (input.Banner is not null)
         {
+            var fileName = StorageFileName.Create(video.Id, nameof(video.Banner), input.Banner.Extension);
             var bannerUrl = await this.storageService.Upload(
-                $"{video.Id}-banner.{input.Banner.Extension}",
+                fileName,
                 input.Banner.FileStream,
                 cancellationToken);
 
@@ -110,14 +119,41 @@ public class CreateVideo : ICreateVideo
 
         if (input.ThumbHalf is not null)
         {
+            var fileName = StorageFileName.Create(video.Id, nameof(video.ThumbHalf), input.ThumbHalf.Extension);
             var thumbHalfUrl = await this.storageService.Upload(
-                $"{video.Id}-thumbHalf.{input.ThumbHalf.Extension}",
+                fileName,
                 input.ThumbHalf.FileStream,
                 cancellationToken);
 
             video.UpdateThumbHalf(thumbHalfUrl);
         }
     }
+
+    private async Task UploadVideosMedia(CreateVideoInput input, CancellationToken cancellationToken, Video video)
+    {
+        if (input.Media is not null)
+        {
+            var fileName = StorageFileName.Create(video.Id, nameof(video.Media), input.Media.Extension);
+            var mediaUrl = await this.storageService.Upload(
+                fileName,
+                input.Media.FileStream,
+                cancellationToken);
+
+            video.UpdateMedia(mediaUrl);
+        }
+
+        if (input.Trailer is not null)
+        {
+            var fileName = StorageFileName.Create(video.Id, nameof(video.Trailer), input.Trailer.Extension);
+            var trailerUrl = await this.storageService.Upload(
+                fileName,
+                input.Trailer.FileStream,
+                cancellationToken);
+
+            video.UpdateTrailer(trailerUrl);
+        }
+    }
+
 
     private async Task ValidateAndAddRelations(CreateVideoInput input, CancellationToken cancellationToken, Video video)
     {

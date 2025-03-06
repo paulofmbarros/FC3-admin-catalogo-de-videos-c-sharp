@@ -23,6 +23,32 @@ public abstract class VideoTestFixtureBase : BaseFixture
         this.GetValidRating()
     );
 
+    public Video GetValidVideoWithAllProperties()
+    {
+        var video =  new Video(
+            this.GetValidTitle(),
+            this.GetValidDescription(),
+            this.GetRandomBoolean(),
+            this.GetRandomBoolean(),
+            this.GetValidYearLaunched(),
+            this.GetValidDuration(),
+            this.GetValidRating()
+        );
+
+        video.UpdateBanner(this.GetValidImagePath());
+        video.UpdateThumb(this.GetValidImagePath());
+        video.UpdateThumbHalf(this.GetValidImagePath());
+        video.UpdateMedia(this.GetValidMediaPath());
+        video.UpdateTrailer(this.GetValidMediaPath());
+
+        var random = new Random();
+        Enumerable.Range(1, random.Next(2, 5)).ToList().ForEach(_=> video.AddCastMember(Guid.NewGuid()) );
+        Enumerable.Range(1, random.Next(2, 5)).ToList().ForEach(_=> video.AddCategory(Guid.NewGuid()) );
+        Enumerable.Range(1, random.Next(2, 5)).ToList().ForEach(_=> video.AddGenre(Guid.NewGuid()) );
+
+        return video;
+    }
+
     public Video GetInvalidVideo() => new Video(
         this.GetTooLongTitle(),
         this.GetTooLongDescription(),

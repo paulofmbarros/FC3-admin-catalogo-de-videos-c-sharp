@@ -4,12 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.CreateVideo;
+namespace FC.CodeFlix.Catalog.UnitTets.Application.Video.GetVideo;
 
-using Common;
-using MediatR;
+using UnitTets.Common.Fixtures;
 
-public interface ICreateVideo : IRequestHandler<CreateVideoInput, VideoModelOutput>
+[CollectionDefinition(nameof(GetVideoTestFixture))]
+public class GetVideoTestFixtureCollection : ICollectionFixture<GetVideoTestFixture>
+{
+
+}
+
+public class GetVideoTestFixture : VideoTestFixtureBase
 {
     
 }

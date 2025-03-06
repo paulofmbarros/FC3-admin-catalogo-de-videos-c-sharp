@@ -4,12 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.CreateVideo;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.Common;
 
 using Domain.Entity;
 using Domain.Enum;
 
-public record CreateVideoOutput(
+public record VideoModelOutput(
     Guid Id,
     DateTime CreatedAt,
     string Title,
@@ -24,10 +24,12 @@ public record CreateVideoOutput(
     IReadOnlyCollection<Guid> CastMembersIds,
     string? Thumb,
     string? Banner,
-    string? ThumbHalf
-    )
+    string? ThumbHalf,
+    string? Media,
+    string? Trailer
+)
 {
-    public static CreateVideoOutput FromVideo(Video video) => new (
+    public static VideoModelOutput FromVideo(Video video) => new (
         video.Id,
         video.CreatedAt,
         video.Title,
@@ -42,5 +44,8 @@ public record CreateVideoOutput(
         video.CastMembers,
         video.Thumb?.Path,
         video.Banner?.Path,
-        video.ThumbHalf?.Path);
+        video.ThumbHalf?.Path,
+        video.Media?.FilePath,
+        video.Trailer?.FilePath
+    );
 }

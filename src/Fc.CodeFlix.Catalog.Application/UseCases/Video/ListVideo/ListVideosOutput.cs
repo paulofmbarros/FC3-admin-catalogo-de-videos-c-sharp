@@ -4,12 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.CreateVideo;
+namespace Fc.CodeFlix.Catalog.Application.UseCases.Video.ListVideo;
 
+using Application.Common;
 using Common;
-using MediatR;
 
-public interface ICreateVideo : IRequestHandler<CreateVideoInput, VideoModelOutput>
+public class ListVideosOutput : PaginatedListOutput<VideoModelOutput>
 {
-    
+    public ListVideosOutput(int page, int perPage, int total, IReadOnlyList<VideoModelOutput> items) : base(page, perPage, total, items)
+    {
+    }
 }
