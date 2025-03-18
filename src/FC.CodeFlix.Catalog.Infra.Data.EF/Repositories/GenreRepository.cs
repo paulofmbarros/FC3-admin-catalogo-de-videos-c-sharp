@@ -117,6 +117,7 @@ public class GenreRepository : IGenreRepository
     }
 
     public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public Task<IReadOnlyList<Genre>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
 
 
     private IQueryable<Genre> AddOrderToQuery(IQueryable<Genre> query, string orderProperty, SearchOrder order)

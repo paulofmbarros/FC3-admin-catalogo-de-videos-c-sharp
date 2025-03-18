@@ -8,6 +8,7 @@ namespace FC.CodeFlix.Catalog.UnitTets.Application.Video.GetVideo;
 
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Video.GetVideo;
+using Fc.CodeFlix.Catalog.Domain.Extensions;
 using Fc.CodeFlix.Catalog.Domain.Repository;
 using Fc.CodeFlix.Catalog.Domain.SeedWork;
 using FluentAssertions;
@@ -41,7 +42,7 @@ public class GetVideoTest
       output.Published.Should().Be(exampleVideo.Published);
       output.Description.Should().Be(exampleVideo.Description);
       output.Duration.Should().Be(exampleVideo.Duration);
-      output.Rating.Should().Be(exampleVideo.Rating);
+      output.Rating.Should().Be(exampleVideo.Rating.ToStringSignal());
       output.YearLaunched.Should().Be(exampleVideo.YearLaunched);
       output.Opened.Should().Be(exampleVideo.Opened);
 
@@ -87,18 +88,20 @@ public class GetVideoTest
         output.Published.Should().Be(exampleVideo.Published);
         output.Description.Should().Be(exampleVideo.Description);
         output.Duration.Should().Be(exampleVideo.Duration);
-        output.Rating.Should().Be(exampleVideo.Rating);
+        output.Rating.Should().Be(exampleVideo.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(exampleVideo.YearLaunched);
         output.Opened.Should().Be(exampleVideo.Opened);
-        output.Thumb.Should().Be(exampleVideo.Thumb.Path);
+        output.ThumbFileUrl.Should().Be(exampleVideo.Thumb.Path);
         output.ThumbHalf.Should().Be(exampleVideo.ThumbHalf.Path);
-        output.Banner.Should().Be(exampleVideo.Banner.Path);
-        output.Media.Should().Be(exampleVideo.Media.FilePath);
-        output.Trailer.Should().Be(exampleVideo.Trailer.FilePath);
-        output.CategoriesIds.Should().NotBeEmpty();
-        output.CategoriesIds.Should().BeEquivalentTo(exampleVideo.Categories);
-        output.CastMembersIds.Should().BeEquivalentTo(exampleVideo.CastMembers);
-        output.GenresIds.Should().BeEquivalentTo(exampleVideo.Genres);
+        output.BannerFileUrl.Should().Be(exampleVideo.Banner.Path);
+        output.MediaFileUrl.Should().Be(exampleVideo.Media.FilePath);
+        output.TrailerFileUrl.Should().Be(exampleVideo.Trailer.FilePath);
+        var outputItemsCategoriesIds = output.Categories.Select(dto => dto.Id).ToList();
+        outputItemsCategoriesIds.Should().BeEquivalentTo(exampleVideo.Categories);
+        var outputItemsGenresIds = output.Genres.Select(dto => dto.Id).ToList();
+        outputItemsGenresIds.Should().BeEquivalentTo(exampleVideo.Genres);
+        var outputItemsCastMembersIds = output.CastMembers.Select(dto => dto.Id).ToList();
+        outputItemsCastMembersIds.Should().BeEquivalentTo(exampleVideo.CastMembers);
 
         repositoryMock.VerifyAll();
 

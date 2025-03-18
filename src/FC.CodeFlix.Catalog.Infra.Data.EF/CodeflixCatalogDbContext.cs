@@ -18,6 +18,8 @@ public class CodeflixCatalogDbContext : DbContext
     public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
     public DbSet<CastMember> CastMembers => Set<CastMember>();
 
+    public DbSet<Video> Videos => Set<Video>();
+
     public CodeflixCatalogDbContext(DbContextOptions<CodeflixCatalogDbContext> options) : base(options)
     {
     }
@@ -27,6 +29,7 @@ public class CodeflixCatalogDbContext : DbContext
         //modelos
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new GenreConfiguration());
+        modelBuilder.ApplyConfiguration(new VideoConfiguration());
 
         //relacionamentos
         modelBuilder.ApplyConfiguration(new GenresCategoriesConfiguration());

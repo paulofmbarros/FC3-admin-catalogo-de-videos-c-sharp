@@ -63,7 +63,7 @@ public class Video : AggregateRoot
         videoValidator.Validate();
     }
 
-    public void Update(string expectedTitle, string expectedDescription, bool expectedOpened, bool expectedPublished, int expectedYearLaunched, int expectedDuration)
+    public void Update(string expectedTitle, string expectedDescription, bool expectedOpened, bool expectedPublished, int expectedYearLaunched, int expectedDuration, Rating? rating = null)
     {
         this.Title = expectedTitle;
         this.Description = expectedDescription;
@@ -71,6 +71,10 @@ public class Video : AggregateRoot
         this.Published = expectedPublished;
         this.YearLaunched = expectedYearLaunched;
         this.Duration = expectedDuration;
+        if (rating != null)
+        {
+            this.Rating = rating.Value;
+        }
     }
 
     public void UpdateThumb(string imagePath)

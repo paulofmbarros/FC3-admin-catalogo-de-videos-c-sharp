@@ -114,6 +114,61 @@ public class VideoTest
         video.Duration.Should().Be(expectedDuration);
     }
 
+    [Fact(DisplayName = nameof(UpdateWithRating))]
+    [Trait("Domain", "Video - Aggregate")]
+    public void UpdateWithRating()
+    {
+        var video = this.fixture.GetInvalidVideo();
+        var notificationValidationHandler = new NotificationValidationHandler();
+        var expectedTitle = this.fixture.GetValidTitle();
+        var expectedDescription = this.fixture.GetValidDescription();
+        var expectedOpened = this.fixture.GetRandomBoolean();
+        var expectedPublished = this.fixture.GetRandomBoolean();
+        var expectedYearLaunched = this.fixture.GetValidYearLaunched();
+        var expectedDuration = this.fixture.GetValidDuration();
+        var expectedRating = this.fixture.GetValidRating();
+
+        video.Update(
+            expectedTitle,
+            expectedDescription,
+            expectedOpened,
+            expectedPublished,
+            expectedYearLaunched,
+            expectedDuration,
+            expectedRating
+        );
+        video.Validate(notificationValidationHandler);
+
+        notificationValidationHandler.HasErrors().Should().BeFalse();
+        video.Title.Should().Be(expectedTitle);
+        video.Description.Should().Be(expectedDescription);
+        video.Opened.Should().Be(expectedOpened);
+        video.Published.Should().Be(expectedPublished);
+        video.YearLaunched.Should().Be(expectedYearLaunched);
+        video.Duration.Should().Be(expectedDuration);
+        video.Rating.Should().Be(expectedRating);
+    }
+    [Fact(DisplayName = nameof(UpdateWithoutRatingDoesntChangeTheRating))]
+    [Trait("Domain", "Video - Aggregate")]
+    public void UpdateWithoutRatingDoesntChangeTheRating()
+    {
+        var video = this.fixture.GetInvalidVideo();
+        var notificationValidationHandler = new NotificationValidationHandler();
+        var expectedRating = video.Rating;
+
+        video.Update(
+            this.fixture.GetValidTitle(),
+            this.fixture.GetValidDescription(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetRandomBoolean(),
+            this.fixture.GetValidYearLaunched(),
+            this.fixture.GetValidDuration()
+        );
+        video.Validate(notificationValidationHandler);
+
+        video.Rating.Should().Be(expectedRating);
+    }
+
     [Fact(DisplayName = nameof(ValidateGenerateErrorsAfterUpdateToInvalidState))]
     [Trait("Domain", "Video - Aggregate")]
     public void ValidateGenerateErrorsAfterUpdateToInvalidState()
