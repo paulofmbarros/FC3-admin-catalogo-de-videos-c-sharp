@@ -27,13 +27,13 @@ public class GenreRepository : IGenreRepository
         this.dbContext = dbContext;
     }
 
-    public async Task Insert(Genre genre, CancellationToken cancellationToken)
+    public async Task Insert(Genre video, CancellationToken cancellationToken)
     {
-        await this.Genres.AddAsync(genre, cancellationToken);
+        await this.Genres.AddAsync(video, cancellationToken);
 
-        if(genre.Categories.Count > 0)
+        if(video.Categories.Count > 0)
         {
-           var relations = genre.Categories.Select(categoryId => new GenresCategories(categoryId, genre.Id));
+           var relations = video.Categories.Select(categoryId => new GenresCategories(categoryId, video.Id));
               await this.GenresCategories.AddRangeAsync(relations, cancellationToken);
         }
     }

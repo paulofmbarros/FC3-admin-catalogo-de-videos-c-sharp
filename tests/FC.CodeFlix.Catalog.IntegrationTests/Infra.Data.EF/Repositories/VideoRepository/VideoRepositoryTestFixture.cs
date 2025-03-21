@@ -63,4 +63,88 @@ public class VideoRepositoryTestFixture : BaseFixture
 
     public bool GetRandomBoolean() => this.Faker.Random.Bool();
 
+    public string GetValidName() => this.Faker.Name.FullName();
+
+    public CastMemberType GetRandomCastMemberType() => (CastMemberType)new Random().Next(1, 2);
+
+    public CastMember GetExampleCastMember() => new(this.GetValidName(), this.GetRandomCastMemberType());
+    public List<CastMember> GetRandomCastMemberList() => Enumerable.Range(0, Random.Shared.Next(1,5)).Select(i => new CastMember(this.GetValidName(), this.GetRandomCastMemberType())).ToList();
+
+    public List<CastMember> GetExampleCastMembersList(int quantity)
+    {
+        var castMembers = new List<CastMember>();
+        for (var i = 0; i < quantity; i++)
+        {
+            castMembers.Add(new CastMember($"CastMember {i}", this.GetRandomCastMemberType()));
+        }
+
+        return castMembers;
+    }
+
+    public Category GetExampleCategory()
+        => new(
+            GetValidCategoryName(),
+            GetValidCategoryDescription(),
+            this.GetRandomBoolean()
+        );
+
+    public string GetValidCategoryName()
+    {
+        var categoryName = "";
+        while (categoryName.Length < 3)
+        {
+            categoryName = this.Faker.Commerce.Categories(1)[0];
+        }
+
+        if (categoryName.Length > 255)
+        {
+            categoryName = categoryName.Substring(0, 255);
+        }
+
+        return categoryName;
+    }
+
+    public string GetValidCategoryDescription()
+    {
+        var categoryDescription = this.Faker.Commerce.ProductDescription();
+        if (categoryDescription.Length > 10_000)
+        {
+            categoryDescription = categoryDescription.Substring(0, 10000);
+        }
+
+        return categoryDescription;
+    }
+
+    public List<Category> GetRandomCategoryList()=> Enumerable.Range(0, Random.Shared.Next(1,5)).Select(_ => new Category(GetValidCategoryName(), this.GetValidCategoryDescription())).ToList();
+
+    public string GetValidGenreName() => Faker.Commerce.Categories(1)[0];
+
+    public Genre GetExampleGenre() => new Genre(this.GetValidGenreName(),true);
+
+    public List<Genre> GetRandomGenresList() =>
+        Enumerable.Range(0, Random.Shared.Next(1,5)).Select(i => new Genre(this.GetValidGenreName(), true)).ToList();
+
+    public Video GetValidVideoWithAllProperties()
+    {
+        var video =  new Video(
+            this.GetValidTitle(),
+            this.GetValidDescription(),
+            this.GetRandomBoolean(),
+            this.GetRandomBoolean(),
+            this.GetValidYearLaunched(),
+            this.GetValidDuration(),
+            this.GetValidRating()
+        );
+
+        video.UpdateBanner(this.GetValidImagePath());
+        video.UpdateThumb(this.GetValidImagePath());
+        video.UpdateThumbHalf(this.GetValidImagePath());
+        video.UpdateMedia(this.GetValidMediaPath());
+        video.UpdateTrailer(this.GetValidMediaPath());
+
+        video.UpdateAsEncoded(GetValidImagePath());
+
+        return video;
+    }
+
 }

@@ -15,8 +15,8 @@ using Microsoft.EntityFrameworkCore;
 public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMemberRepository
 {
     private DbSet<CastMember> CastMembers => dbContext.Set<CastMember>();
-    public async Task Insert(CastMember genre, CancellationToken cancellationToken) =>
-        await this.CastMembers.AddAsync(genre, cancellationToken);
+    public async Task Insert(CastMember video, CancellationToken cancellationToken) =>
+        await this.CastMembers.AddAsync(video, cancellationToken);
 
     public async Task<CastMember> Get(Guid id, CancellationToken cancellationToken)
     {

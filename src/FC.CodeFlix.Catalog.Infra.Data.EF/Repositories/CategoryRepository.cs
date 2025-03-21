@@ -22,8 +22,8 @@ public class CategoryRepository : ICategoryRepository
         this.dbContext = dbContext;
     }
 
-    public async Task Insert(Category genre, CancellationToken cancellationToken)
-      => await this.Categories.AddAsync(genre, cancellationToken);
+    public async Task Insert(Category video, CancellationToken cancellationToken)
+      => await this.Categories.AddAsync(video, cancellationToken);
 
     public async Task<Category> Get(Guid id, CancellationToken cancellationToken)
     {

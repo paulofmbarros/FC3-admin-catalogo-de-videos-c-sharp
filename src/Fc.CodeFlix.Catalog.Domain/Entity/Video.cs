@@ -100,6 +100,14 @@ public class Video : AggregateRoot
         this.Media.UpdateAsSentToEncode();
     }
 
+    public void UpdateAsEncoded(string validEncodedPath)
+    {
+        if (this.Media is null)
+            throw new EntityValidationException("There is no media");
+
+        this.Media.UpdateAsEncoded(validEncodedPath);
+    }
+
     public void AddCategory(Guid categoryId) => this.categories.Add(categoryId);
 
     public void RemoveCategory(Guid categoryId) =>
