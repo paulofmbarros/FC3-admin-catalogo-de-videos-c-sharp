@@ -59,7 +59,7 @@ public class ListCategoriesTest
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().NotBeNull();
         output.Items.Should().HaveCount(categoriesExample.Count);
-        output.Items.Should().BeEquivalentTo(categoriesExample);
+        output.Items.Should().BeEquivalentTo(categoriesExample, options => options.Excluding(x => x.Events));
 
         repositoryMock.Verify(x => x.Search(It.IsAny<SearchInput>(), It.IsAny<CancellationToken>()), Times.Once);
 
@@ -107,7 +107,7 @@ public class ListCategoriesTest
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().NotBeNull();
         output.Items.Should().HaveCount(categoriesExample.Count);
-        output.Items.Should().BeEquivalentTo(categoriesExample);
+        output.Items.Should().BeEquivalentTo(categoriesExample, options => options.Excluding(x => x.Events) );
 
         repositoryMock.Verify(x => x.Search(It.IsAny<SearchInput>(), It.IsAny<CancellationToken>()), Times.Once);
 

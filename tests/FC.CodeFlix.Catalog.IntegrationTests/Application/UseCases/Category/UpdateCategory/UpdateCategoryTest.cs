@@ -8,6 +8,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Upd
 
 using Catalog.Infra.Data.EF;
 using Catalog.Infra.Data.EF.Repositories;
+using Fc.CodeFlix.Catalog.Application;
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.Common;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
@@ -15,6 +16,8 @@ using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 [Collection(nameof(UpdateCategoryTestFixture))]
 public class UpdateCategoryTest
@@ -37,7 +40,11 @@ public class UpdateCategoryTest
         // Arrange
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         await dbContext.Categories.AddRangeAsync(this.fixture.GetExampleCategory());
         var trackingInfo =  await dbContext.Categories.AddAsync(exampleCategory);
@@ -76,7 +83,11 @@ public class UpdateCategoryTest
         // Arrange
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
         await dbContext.Categories.AddRangeAsync(this.fixture.GetExampleCategory());
         var trackingInfo =  await dbContext.Categories.AddAsync(exampleCategory);
         await dbContext.SaveChangesAsync();
@@ -114,7 +125,11 @@ public class UpdateCategoryTest
         // Arrange
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
         await dbContext.Categories.AddRangeAsync(this.fixture.GetExampleCategory());
         var trackingInfo =  await dbContext.Categories.AddAsync(exampleCategory);
         await dbContext.SaveChangesAsync();
@@ -151,7 +166,11 @@ public class UpdateCategoryTest
         // Arrange
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
         await dbContext.Categories.AddRangeAsync(this.fixture.GetExampleCategory());
         var exampleCategory = this.fixture.GetExampleCategory();
         var trackingInfo =  await dbContext.Categories.AddAsync(exampleCategory);
@@ -182,8 +201,11 @@ public class UpdateCategoryTest
         // Arrange
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
-        var exampleCategory = this.fixture.GetExampleCategory();
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());        var exampleCategory = this.fixture.GetExampleCategory();
         var trackingInfo =  await dbContext.Categories.AddAsync(exampleCategory);
         await dbContext.SaveChangesAsync();
         input = input with { Id = exampleCategory.Id };

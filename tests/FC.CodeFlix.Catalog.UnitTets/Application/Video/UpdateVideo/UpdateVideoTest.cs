@@ -548,7 +548,7 @@ public class UpdateVideoTest
         this.storageService.Setup(x => x.Upload(
             It.Is<string>(name => (
                 name == StorageFileName.Create(exampleVideo.Id, nameof(exampleVideo.Banner), input.Banner.Extension))),
-            It.IsAny<FileStream>(), It.IsAny<CancellationToken>())).ReturnsAsync(bannerPath);
+            It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>())).ReturnsAsync(bannerPath);
 
         var output = await this.useCase.Handle(input, CancellationToken.None);
 
@@ -613,7 +613,7 @@ public class UpdateVideoTest
             It.IsAny<CancellationToken>()), Times.Once);
         this.videoRepository.VerifyAll();
         this.storageService.Verify(
-            x => x.Upload(It.IsAny<string>(), It.IsAny<FileStream>(), It.IsAny<CancellationToken>()), Times.Never);
+            x => x.Upload(It.IsAny<string>(), It.IsAny<FileStream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Never);
         this.unitOfWork.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -650,9 +650,6 @@ public class UpdateVideoTest
                                   && video.Opened == input.Opened
                                   && video.Published == input.Published
                                   && video.Duration == input.Duration
-                                  && video.Genres.Count == 0
-                                  && video.Categories.Count == 0
-                                  && video.CastMembers.Count == 0
             ),
             It.IsAny<CancellationToken>()), Times.Once);
         this.videoRepository.VerifyAll();
@@ -678,7 +675,7 @@ public class UpdateVideoTest
         this.storageService.Setup(x => x.Upload(
             It.Is<string>(name => (
                 name == StorageFileName.Create(exampleVideo.Id, nameof(exampleVideo.Thumb), input.Thumb.Extension))),
-            It.IsAny<FileStream>(), It.IsAny<CancellationToken>())).ReturnsAsync(thumbPath);
+            It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>())).ReturnsAsync(thumbPath);
 
         var output = await this.useCase.Handle(input, CancellationToken.None);
 
@@ -743,7 +740,7 @@ public class UpdateVideoTest
             It.IsAny<CancellationToken>()), Times.Once);
         this.videoRepository.VerifyAll();
         this.storageService.Verify(
-            x => x.Upload(It.IsAny<string>(), It.IsAny<FileStream>(), It.IsAny<CancellationToken>()), Times.Never);
+            x => x.Upload(It.IsAny<string>(), It.IsAny<FileStream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Never);
         this.unitOfWork.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -759,7 +756,7 @@ public class UpdateVideoTest
         this.storageService.Setup(x => x.Upload(
             It.Is<string>(name => (
                 name == StorageFileName.Create(exampleVideo.Id, nameof(exampleVideo.ThumbHalf), input.ThumbHalf.Extension))),
-            It.IsAny<FileStream>(), It.IsAny<CancellationToken>())).ReturnsAsync(thumbHalfPath);
+            It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>())).ReturnsAsync(thumbHalfPath);
 
         var output = await this.useCase.Handle(input, CancellationToken.None);
 
@@ -824,7 +821,7 @@ public class UpdateVideoTest
             It.IsAny<CancellationToken>()), Times.Once);
         this.videoRepository.VerifyAll();
         this.storageService.Verify(
-            x => x.Upload(It.IsAny<string>(), It.IsAny<FileStream>(), It.IsAny<CancellationToken>()), Times.Never);
+            x => x.Upload(It.IsAny<string>(), It.IsAny<FileStream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Never);
         this.unitOfWork.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 

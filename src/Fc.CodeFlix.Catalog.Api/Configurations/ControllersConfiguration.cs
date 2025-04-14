@@ -7,8 +7,8 @@
 namespace Fc.CodeFlix.Catalog.Api.Configurations;
 
 using System.Text.Json;
+using FC.CodeFlix.Catalog.Infra.Messaging.JsonPolicies;
 using Filters;
-using Policies;
 
 public static class ControllersConfiguration
 {

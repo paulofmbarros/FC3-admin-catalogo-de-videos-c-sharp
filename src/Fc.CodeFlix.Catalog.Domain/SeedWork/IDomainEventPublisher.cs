@@ -4,12 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Api.Configurations.Policies;
+namespace Fc.CodeFlix.Catalog.Domain.SeedWork;
 
-using System.Text.Json;
-using Extensions.String;
-
-public class JsonSnakeCasePolicy : JsonNamingPolicy
+public interface IDomainEventPublisher
 {
-    public override string ConvertName(string name) => name.ToSnakeCase();
+    Task PublishAsync<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken)
+        where TDomainEvent : DomainEvent;
 }

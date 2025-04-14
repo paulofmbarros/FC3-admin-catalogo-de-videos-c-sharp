@@ -13,6 +13,9 @@
         <PackageReference Include="Bogus" Version="35.6.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
         <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="Google.Cloud.Storage.V1" Version="4.11.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
         <PackageReference Include="Moq" Version="4.20.70" />
         <PackageReference Include="xunit" Version="2.9.1" />
@@ -29,6 +32,8 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\Fc.CodeFlix.Catalog.Application\Fc.CodeFlix.Catalog.Application.csproj" />
       <ProjectReference Include="..\..\src\Fc.CodeFlix.Catalog.Domain\Fc.CodeFlix.Catalog.Domain.csproj" />
+      <ProjectReference Include="..\..\src\FC.CodeFlix.Catalog.Infra.Messaging\FC.CodeFlix.Catalog.Infra.Messaging.csproj" />
+      <ProjectReference Include="..\..\src\Fc.CodeFlix.Catalog.Infra.Storage\Fc.CodeFlix.Catalog.Infra.Storage.csproj" />
     </ItemGroup>
 
     <ItemGroup>

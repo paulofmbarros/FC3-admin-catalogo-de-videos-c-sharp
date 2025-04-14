@@ -56,22 +56,22 @@ public class GenreRepository : IGenreRepository
         return genre;
     }
 
-    public Task Delete(Genre aggregate, CancellationToken cancellationToken)
+    public Task Delete(Genre video, CancellationToken cancellationToken)
     {
-        this.GenresCategories.RemoveRange(this.GenresCategories.Where(x => x.GenreId == aggregate.Id));
-        this.Genres.Remove(aggregate);
+        this.GenresCategories.RemoveRange(this.GenresCategories.Where(x => x.GenreId == video.Id));
+        this.Genres.Remove(video);
 
         return Task.CompletedTask;
     }
 
-    public Task Update(Genre aggregate, CancellationToken cancellationToken)
+    public Task Update(Genre video, CancellationToken cancellationToken)
     {
-        this.Genres.Update(aggregate);
+        this.Genres.Update(video);
         //Remove pre-existing relations
-        this.GenresCategories.RemoveRange(this.GenresCategories.Where(x => x.GenreId == aggregate.Id));
+        this.GenresCategories.RemoveRange(this.GenresCategories.Where(x => x.GenreId == video.Id));
 
         //Add new relations
-        this.GenresCategories.AddRange(aggregate.Categories.Select(categoryId => new GenresCategories(categoryId, aggregate.Id)));
+        this.GenresCategories.AddRange(video.Categories.Select(categoryId => new GenresCategories(categoryId, video.Id)));
         return Task.CompletedTask;
     }
 
@@ -116,8 +116,17 @@ public class GenreRepository : IGenreRepository
         return new SearchOutput<Genre>( searchInput.Page, searchInput.PerPage, total, genres);
     }
 
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
-    public Task<IReadOnlyList<Genre>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => await this
+        .Genres
+        .AsNoTracking()
+        .Where(x => ids.Contains(x.Id))
+        .Select(x => x.Id)
+        .ToListAsync(cancellationToken);
+    public async Task<IReadOnlyList<Genre>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken) =>
+        await this.Genres
+            .AsNoTracking()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync(cancellationToken);
 
 
     private IQueryable<Genre> AddOrderToQuery(IQueryable<Genre> query, string orderProperty, SearchOrder order)

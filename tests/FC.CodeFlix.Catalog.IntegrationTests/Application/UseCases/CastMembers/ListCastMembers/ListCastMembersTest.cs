@@ -164,7 +164,11 @@ public class ListCastMembersTest(CastMemberUseCaseBaseFixture fixture)
         output.Should().NotBeNull();
         output.Total.Should().Be(exampleCastMemberList.Count);
         output.Items.Should().HaveCount(exampleCastMemberList.Count);
-        output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
+        output.Items.Should().BeEquivalentTo(expectedOrderedList, options =>
+        {
+            options.Excluding(o => o.Events);
+            return options.WithStrictOrdering();
+        });
         output.Page.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
 

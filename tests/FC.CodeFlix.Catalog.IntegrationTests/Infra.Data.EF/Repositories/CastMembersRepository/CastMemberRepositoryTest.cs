@@ -279,4 +279,50 @@ public class CastMemberRepositoryTest
 
     }
 
+    [Fact(DisplayName = nameof(GetIdsListByIds))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task GetIdsListByIds()
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleCastMembersList = this.fixture.GetExampleCastMembersList(10);
+        await dbContext.AddRangeAsync(exampleCastMembersList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new CastMemberRepository(actDbContext);
+        var idsToGet = exampleCastMembersList.Select(x => x.Id).Take(2).ToList();
+
+        var result = await repository.GetIdsByIds(idsToGet, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(idsToGet.Count);
+        result.ToList().Should().BeEquivalentTo(idsToGet);
+
+    }
+
+    [Fact(DisplayName = nameof(GetIdsListByIdsWhenOnlyThreeIdsMatch))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task GetIdsListByIdsWhenOnlyThreeIdsMatch()
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleCastMembersList = this.fixture.GetExampleCastMembersList(10);
+        await dbContext.AddRangeAsync(exampleCastMembersList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new CastMemberRepository(actDbContext);
+        var idsToGet = exampleCastMembersList.Select(x => x.Id)
+            .Take(3)
+            .Concat(new []{Guid.NewGuid(), Guid.NewGuid(), })
+            .ToList();
+
+        var result = await repository.GetIdsByIds(idsToGet, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(3);
+        result.ToList().Should().NotBeEquivalentTo(idsToGet);
+        idsToGet.Should().Contain(result);
+
+    }
+
 }

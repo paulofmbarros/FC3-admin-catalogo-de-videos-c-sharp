@@ -7,6 +7,7 @@
 namespace Fc.CodeFlix.Catalog.Domain.Entity;
 
 using Enum;
+using Events;
 using Exceptions;
 using SeedWork;
 using Validation;
@@ -87,7 +88,10 @@ public class Video : AggregateRoot
         this.Banner = new Image(imagePath);
 
     public void UpdateMedia(string path)
-        => this.Media = new Media(path);
+    {
+        this.Media = new Media(path);
+        this.RaiseEvent(new VideoUploadedEvent(this.Id, path));
+    }
 
     public void UpdateTrailer(string path)
         => this.Trailer = new Media(path);

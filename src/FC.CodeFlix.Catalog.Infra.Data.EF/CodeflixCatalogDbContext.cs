@@ -33,6 +33,7 @@ public class CodeflixCatalogDbContext : DbContext
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new GenreConfiguration());
         modelBuilder.ApplyConfiguration(new VideoConfiguration());
+        modelBuilder.ApplyConfiguration(new CastMemberConfiguration());
 
         //relacionamentos
         modelBuilder.ApplyConfiguration(new GenresCategoriesConfiguration());
@@ -40,5 +41,5 @@ public class CodeflixCatalogDbContext : DbContext
         modelBuilder.ApplyConfiguration(new VideosGenresConfiguration());
         modelBuilder.ApplyConfiguration(new VideosCastMembersConfiguration());
     }
-    
+
 }

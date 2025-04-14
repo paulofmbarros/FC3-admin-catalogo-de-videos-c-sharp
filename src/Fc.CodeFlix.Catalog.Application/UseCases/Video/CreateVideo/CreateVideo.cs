@@ -102,6 +102,7 @@ public class CreateVideo : ICreateVideo
             var thumbUrl = await this.storageService.Upload(
                 fileName,
                 input.Thumb.FileStream,
+                input.Thumb.ContentType,
                 cancellationToken);
 
             video.UpdateThumb(thumbUrl);
@@ -112,6 +113,7 @@ public class CreateVideo : ICreateVideo
             var bannerUrl = await this.storageService.Upload(
                 fileName,
                 input.Banner.FileStream,
+                input.Banner.ContentType,
                 cancellationToken);
 
             video.UpdateBanner(bannerUrl);
@@ -123,6 +125,7 @@ public class CreateVideo : ICreateVideo
             var thumbHalfUrl = await this.storageService.Upload(
                 fileName,
                 input.ThumbHalf.FileStream,
+                input.ThumbHalf.ContentType,
                 cancellationToken);
 
             video.UpdateThumbHalf(thumbHalfUrl);
@@ -137,6 +140,7 @@ public class CreateVideo : ICreateVideo
             var mediaUrl = await this.storageService.Upload(
                 fileName,
                 input.Media.FileStream,
+                input.Media.ContentType,
                 cancellationToken);
 
             video.UpdateMedia(mediaUrl);
@@ -148,6 +152,7 @@ public class CreateVideo : ICreateVideo
             var trailerUrl = await this.storageService.Upload(
                 fileName,
                 input.Trailer.FileStream,
+                input.Trailer.ContentType,
                 cancellationToken);
 
             video.UpdateTrailer(trailerUrl);

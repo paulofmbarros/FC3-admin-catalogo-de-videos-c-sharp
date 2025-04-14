@@ -39,11 +39,11 @@ public class CategoryRepository : ICategoryRepository
         return category!;
     }
 
-    public Task Delete(Category aggregate, CancellationToken _)
-        => Task.FromResult(this.Categories.Remove(aggregate));
+    public Task Delete(Category video, CancellationToken _)
+        => Task.FromResult(this.Categories.Remove(video));
 
-    public async Task Update(Category aggregate, CancellationToken cancellationToken)
-         => await Task.FromResult(this.Categories.Update(aggregate));
+    public async Task Update(Category video, CancellationToken cancellationToken)
+         => await Task.FromResult(this.Categories.Update(video));
 
 
     public async Task<SearchOutput<Category>> Search(SearchInput searchInput, CancellationToken cancellationToken)

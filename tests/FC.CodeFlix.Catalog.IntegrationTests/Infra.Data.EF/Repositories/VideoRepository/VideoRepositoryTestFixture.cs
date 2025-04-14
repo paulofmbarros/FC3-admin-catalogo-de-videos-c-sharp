@@ -9,6 +9,7 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Infra.Data.EF.Repositories.VideoR
 using Base;
 using Fc.CodeFlix.Catalog.Domain.Entity;
 using Fc.CodeFlix.Catalog.Domain.Enum;
+using Fc.CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
 [CollectionDefinition(nameof(VideoRepositoryTestFixture))]
 public class VideoRespositoryTestFixtureCollection : ICollectionFixture<VideoRepositoryTestFixture>
@@ -18,8 +19,8 @@ public class VideoRespositoryTestFixtureCollection : ICollectionFixture<VideoRep
 
 public class VideoRepositoryTestFixture : BaseFixture
 {
-    public Video GetExampleVideo() => new Video(
-        this.GetValidTitle(),
+    public Video GetExampleVideo(string? title = null) => new Video(
+        title ?? this.GetValidTitle(),
         this.GetValidDescription(),
         this.GetRandomBoolean(),
         this.GetRandomBoolean(),
@@ -27,6 +28,9 @@ public class VideoRepositoryTestFixture : BaseFixture
         this.GetValidDuration(),
         this.GetValidRating()
     );
+
+    public List<Video> GetExampleVideoList(int count = 10) => Enumerable.Range(0, count).Select(_ => this.GetExampleVideo()).ToList();
+
     public string GetValidTitle() => this.Faker.Lorem.Letter(100);
     public string GetValidDescription() => this.Faker.Commerce.ProductDescription();
     public string GetTooLongDescription() => this.Faker.Lorem.Letter(4_001);
@@ -147,4 +151,23 @@ public class VideoRepositoryTestFixture : BaseFixture
         return video;
     }
 
+    public List<Video> GetExampleVideoListByTitles(List<string> titles)
+        => titles.Select(title => this.GetExampleVideo(title: title)).ToList();
+
+    public IEnumerable<Video> CloneVideoListOrdered(List<Video> videos, string orderBy, SearchOrder order)
+    {
+        var listCloned = new List<Video>(videos);
+        var orderedList = (orderBy.ToLower(), order) switch
+        {
+            ("title", SearchOrder.Asc) => listCloned.OrderBy(x => x.Title).ThenBy(x=>x.Id),
+            ("title", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Title).ThenByDescending(x=>x.Id),
+            ("id", SearchOrder.Asc) => listCloned.OrderBy(x => x.Id),
+            ("id", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.Id),
+            ("createdat", SearchOrder.Asc) => listCloned.OrderBy(x => x.CreatedAt),
+            ("createdat", SearchOrder.Desc) => listCloned.OrderByDescending(x => x.CreatedAt),
+            _ => listCloned.OrderBy(x => x.Title).ThenBy(x=>x.Id)
+        };
+
+        return orderedList.ToList();
+    }
 }

@@ -9,11 +9,14 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.CastMembers.
 using Catalog.Infra.Data.EF;
 using Catalog.Infra.Data.EF.Repositories;
 using Common;
+using Fc.CodeFlix.Catalog.Application;
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 using Fc.CodeFlix.Catalog.Domain.Enum;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 [Collection(nameof(CastMemberUseCaseBaseFixture))]
 public class UpdateCastMemberTest(CastMemberUseCaseBaseFixture fixture)
@@ -30,7 +33,12 @@ public class UpdateCastMemberTest(CastMemberUseCaseBaseFixture fixture)
 
         var actDbContext = fixture.CreateDbContext(true);
         var castMemberRepository = new CastMemberRepository(actDbContext);
-        var unitOfWork = new UnitOfWork(actDbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(actDbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
+
 
         var useCase = new UpdateCastMember(unitOfWork, castMemberRepository);
 
@@ -60,7 +68,12 @@ public class UpdateCastMemberTest(CastMemberUseCaseBaseFixture fixture)
     {
         var actDbContext = fixture.CreateDbContext(true);
         var castMemberRepository = new CastMemberRepository(actDbContext);
-        var unitOfWork = new UnitOfWork(actDbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(actDbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
+
         var randomGuid = Guid.NewGuid();
 
         var useCase = new UpdateCastMember(unitOfWork, castMemberRepository);

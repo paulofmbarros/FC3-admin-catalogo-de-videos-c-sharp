@@ -27,11 +27,11 @@ public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMem
         return castMember!;
     }
 
-    public Task Delete(CastMember aggregate, CancellationToken cancellationToken)  =>
-        Task.FromResult(this.CastMembers.Remove(aggregate));
+    public Task Delete(CastMember video, CancellationToken cancellationToken)  =>
+        Task.FromResult(this.CastMembers.Remove(video));
 
-    public Task Update(CastMember aggregate, CancellationToken cancellationToken) =>
-        Task.FromResult(this.CastMembers.Update(aggregate));
+    public Task Update(CastMember video, CancellationToken cancellationToken) =>
+        Task.FromResult(this.CastMembers.Update(video));
 
     public async Task<SearchOutput<CastMember>> Search(SearchInput searchInput, CancellationToken cancellationToken)
     {
@@ -54,7 +54,12 @@ public class CastMemberRepository(CodeflixCatalogDbContext dbContext) : ICastMem
         return new SearchOutput<CastMember>(searchInput.Page,searchInput.PerPage, total, data);
     }
 
-    public Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<IReadOnlyList<Guid>> GetIdsByIds(List<Guid> ids, CancellationToken cancellationToken) => await this
+        .CastMembers
+        .AsNoTracking()
+        .Where(x => ids.Contains(x.Id))
+        .Select(x => x.Id)
+        .ToListAsync(cancellationToken);
 
     private IQueryable<CastMember> AddOrderToQuery(IQueryable<CastMember> query, string orderProperty, SearchOrder order)
         => (orderProperty.ToLower(), order) switch

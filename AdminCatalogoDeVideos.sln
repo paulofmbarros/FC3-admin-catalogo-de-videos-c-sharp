@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "env", "env", "{2DF7D1CB-497
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fc.CodeFlix.Catalog.Infra.Storage", "src\Fc.CodeFlix.Catalog.Infra.Storage\Fc.CodeFlix.Catalog.Infra.Storage.csproj", "{91A4084E-4B96-40F9-9B6F-DD32D634ED21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.CodeFlix.Catalog.Infra.Messaging", "src\FC.CodeFlix.Catalog.Infra.Messaging\FC.CodeFlix.Catalog.Infra.Messaging.csproj", "{2F87BB97-B31D-4CD4-8B4D-1F1ABD33C2E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,8 @@ Global
 		{5B9D71A1-DB6B-4D84-ABC2-966CB350AC5C} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
 		{BC66FBBF-215D-4D90-BD2A-18B969B34F6B} = {C2686A6D-A9BB-4B0E-87CA-499360869AB5}
 		{D5019AD0-8B2B-4FE0-A836-BD50B0742864} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
+		{91A4084E-4B96-40F9-9B6F-DD32D634ED21} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
+		{2F87BB97-B31D-4CD4-8B4D-1F1ABD33C2E8} = {BCD2478D-4837-475B-936A-DDF181E1E25E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{061A6E0B-5774-4F3E-AB4C-052BE61A3DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +72,13 @@ Global
 		{D5019AD0-8B2B-4FE0-A836-BD50B0742864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5019AD0-8B2B-4FE0-A836-BD50B0742864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5019AD0-8B2B-4FE0-A836-BD50B0742864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91A4084E-4B96-40F9-9B6F-DD32D634ED21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A4084E-4B96-40F9-9B6F-DD32D634ED21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A4084E-4B96-40F9-9B6F-DD32D634ED21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A4084E-4B96-40F9-9B6F-DD32D634ED21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F87BB97-B31D-4CD4-8B4D-1F1ABD33C2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F87BB97-B31D-4CD4-8B4D-1F1ABD33C2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F87BB97-B31D-4CD4-8B4D-1F1ABD33C2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F87BB97-B31D-4CD4-8B4D-1F1ABD33C2E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

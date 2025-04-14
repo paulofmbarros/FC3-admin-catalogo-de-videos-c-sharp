@@ -8,9 +8,12 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Cre
 
 using Catalog.Infra.Data.EF;
 using Catalog.Infra.Data.EF.Repositories;
+using Fc.CodeFlix.Catalog.Application;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using Fc.CodeFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 [Collection(nameof(CreateCategoryTestFixture))]
 public class CreateCategoryTests
@@ -26,7 +29,11 @@ public class CreateCategoryTests
     {
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         var useCase = new CreateCategory(unitOfWork, repository);
 
@@ -50,7 +57,11 @@ public class CreateCategoryTests
     {
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         var useCase = new CreateCategory(unitOfWork, repository);
 
@@ -78,7 +89,11 @@ public class CreateCategoryTests
     {
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         var useCase = new CreateCategory(unitOfWork, repository);
 
@@ -110,7 +125,11 @@ public class CreateCategoryTests
     {
         var dbContext = this.fixture.CreateDbContext();
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         var useCase = new CreateCategory(unitOfWork, repository);
 

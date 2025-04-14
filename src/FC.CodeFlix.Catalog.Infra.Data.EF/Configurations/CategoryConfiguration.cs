@@ -25,5 +25,7 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder.Property(c => c.IsActive);
 
+        builder.Ignore(c => c.Events);
+
     }
 }

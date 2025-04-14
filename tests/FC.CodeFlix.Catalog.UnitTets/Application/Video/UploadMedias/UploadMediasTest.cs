@@ -48,12 +48,12 @@ public class UploadMediasTest
         };
         this.videoRepository.Setup(x => x.Get(It.Is<Guid>(x=> x == exampleVideo.Id), It.IsAny<CancellationToken>())).ReturnsAsync(exampleVideo);
 
-        this.storageService.Setup(x=> x.Upload(It.IsAny<string>(),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.IsAny<string>(),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ReturnsAsync(Guid.NewGuid().ToString());
 
          await this.useCase.Handle(input, CancellationToken.None);
 
-        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => fileNames.Contains(x)), It.IsAny<Stream>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => fileNames.Contains(x)), It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Exactly(2));
     }
 
     [Fact(DisplayName = nameof(ThrowsWhenVideoNotFound))]
@@ -64,7 +64,7 @@ public class UploadMediasTest
         var input = this.fixture.GetValidInput(exampleVideo.Id);
         this.videoRepository.Setup(x => x.Get(It.Is<Guid>(x=> x == exampleVideo.Id), It.IsAny<CancellationToken>())).ReturnsAsync(exampleVideo);
 
-        this.storageService.Setup(x=> x.Upload(It.IsAny<string>(),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.IsAny<string>(),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ThrowsAsync(new NotFoundException("Video not found"));
 
         var action = async () => await this.useCase.Handle(input, CancellationToken.None);
@@ -94,10 +94,10 @@ public class UploadMediasTest
 
         this.videoRepository.Setup(x => x.Get(It.Is<Guid>(x=> x == exampleVideo.Id), It.IsAny<CancellationToken>())).ReturnsAsync(exampleVideo);
 
-        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == videoFileName),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == videoFileName),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ReturnsAsync(videoStoragePath);
 
-        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == trailerFileName),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == trailerFileName),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Something went wrong with upload"));
 
         var action = async () => await this.useCase.Handle(input, CancellationToken.None);
@@ -105,7 +105,7 @@ public class UploadMediasTest
         await action.Should().ThrowAsync<Exception>();
 
         this.videoRepository.VerifyAll();
-        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => fileNames.Contains(x)), It.IsAny<Stream>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => fileNames.Contains(x)), It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Exactly(2));
 
         this.storageService.Verify(x => x.Delete(It.Is<string>(x => x == videoStoragePath), It.IsAny<CancellationToken>()),
             Times.Exactly(1));
@@ -142,10 +142,10 @@ public class UploadMediasTest
 
         this.videoRepository.Setup(x => x.Get(It.Is<Guid>(x=> x == exampleVideo.Id), It.IsAny<CancellationToken>())).ReturnsAsync(exampleVideo);
 
-        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == videoFileName),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == videoFileName),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ReturnsAsync(videoStoragePath);
 
-        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == trailerFileName),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == trailerFileName),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ReturnsAsync(trailerStoragePath);
 
         this.unitOfWork.Setup(x => x.Commit(It.IsAny<CancellationToken>()))
@@ -158,7 +158,7 @@ public class UploadMediasTest
 
         this.videoRepository.VerifyAll();
 
-        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => fileNames.Contains(x)), It.IsAny<Stream>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => fileNames.Contains(x)), It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Exactly(2));
 
         this.storageService.Verify(x => x.Delete(It.Is<string>(x => fileNamesPaths.Contains(x)), It.IsAny<CancellationToken>()),
             Times.Exactly(2));
@@ -182,7 +182,7 @@ public class UploadMediasTest
 
         this.videoRepository.Setup(x => x.Get(It.Is<Guid>(x=> x == exampleVideo.Id), It.IsAny<CancellationToken>())).ReturnsAsync(exampleVideo);
 
-        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == videoFileName),It.IsAny<Stream>() ,It.IsAny<CancellationToken>()))
+        this.storageService.Setup(x=> x.Upload(It.Is<string>(x => x == videoFileName),It.IsAny<Stream>() ,It.IsAny<string>(),It.IsAny<CancellationToken>()))
             .ReturnsAsync(videoStoragePath);
 
         this.unitOfWork.Setup(x => x.Commit(It.IsAny<CancellationToken>()))
@@ -195,9 +195,9 @@ public class UploadMediasTest
 
         this.videoRepository.VerifyAll();
 
-        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => x == videoFileName), It.IsAny<Stream>(), It.IsAny<CancellationToken>()), Times.Exactly(1));
+        this.storageService.Verify(x=> x.Upload(It.Is<string>(x => x == videoFileName), It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Exactly(1));
 
-        this.storageService.Verify(x=> x.Upload(It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<CancellationToken>()), Times.Exactly(1));
+        this.storageService.Verify(x=> x.Upload(It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<string>(),It.IsAny<CancellationToken>()), Times.Exactly(1));
 
         this.storageService.Verify(x => x.Delete(It.Is<string>(x => x == videoStoragePath), It.IsAny<CancellationToken>()),
             Times.Exactly(1));

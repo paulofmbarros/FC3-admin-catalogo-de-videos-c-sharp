@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Fc.CodeFlix.Catalog.Api.Extensions.String;
+namespace FC.CodeFlix.Catalog.Infra.Messaging.Extensions;
 
 using Newtonsoft.Json.Serialization;
 

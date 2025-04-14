@@ -8,10 +8,13 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Category.Del
 
 using Catalog.Infra.Data.EF;
 using Catalog.Infra.Data.EF.Repositories;
+using Fc.CodeFlix.Catalog.Application;
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 [Collection(nameof(DeleteCategoryTestFixture))]
 public class DeleteCategoryTest
@@ -35,9 +38,13 @@ public class DeleteCategoryTest
         var tracking = await dbContext.AddAsync(categoryExample);
         await dbContext.SaveChangesAsync();
         tracking.State = EntityState.Detached;
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
 
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
 
         var input = new DeleteCategoryInput(categoryExample.Id);
@@ -68,7 +75,11 @@ public class DeleteCategoryTest
         await dbContext.SaveChangesAsync();
 
         var repository = new CategoryRepository(dbContext);
-        var unitOfWork = new UnitOfWork(dbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(dbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
 
         var input = new DeleteCategoryInput(categoryExample.Id);

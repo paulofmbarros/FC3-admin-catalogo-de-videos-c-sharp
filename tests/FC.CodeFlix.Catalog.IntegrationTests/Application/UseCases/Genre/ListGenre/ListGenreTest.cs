@@ -40,7 +40,7 @@ public class ListGenreTest
         output.Page.Should().Be(input.Page);
         output.PerPage.Should().Be(input.PerPage);
         output.Total.Should().Be(exampleGenre.Count);
-        output.Items.Should().BeEquivalentTo(exampleGenre);
+        output.Items.Should().BeEquivalentTo(exampleGenre, options => options.Excluding(o => o.Events));
 
     }
 

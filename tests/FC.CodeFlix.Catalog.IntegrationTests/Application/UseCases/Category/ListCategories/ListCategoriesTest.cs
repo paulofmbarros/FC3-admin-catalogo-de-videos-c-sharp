@@ -38,7 +38,7 @@ public class ListCategoriesTest
         output.Should().NotBeNull();
         output.Total.Should().Be(exampleCategoryList.Count);
         output.Items.Should().HaveCount(exampleCategoryList.Count);
-        output.Items.Should().BeEquivalentTo(exampleCategoryList);
+        output.Items.Should().BeEquivalentTo(exampleCategoryList, options => options.Excluding(o => o.Events));
         output.Page.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
 
@@ -160,7 +160,11 @@ public class ListCategoriesTest
         output.Should().NotBeNull();
         output.Total.Should().Be(exampleCategoryList.Count);
         output.Items.Should().HaveCount(exampleCategoryList.Count);
-        output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
+        output.Items.Should().BeEquivalentTo(expectedOrderedList, options =>
+        {
+            options.Excluding(x => x.Events);
+            return options.WithStrictOrdering();
+        });
         output.Page.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
 

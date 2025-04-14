@@ -634,8 +634,8 @@ public class GenreRepositoryTest
     public async Task SearchOrdered(string orderBy, string order)
     {
         var dbContext = this.fixture.CreateDbContext();
-        var examplegenresList = this.fixture.GetExampleGenresList(10);
-        await dbContext.AddRangeAsync(examplegenresList);
+        var exampleGenresList = this.fixture.GetExampleGenresList(10);
+        await dbContext.AddRangeAsync(exampleGenresList);
         await dbContext.SaveChangesAsync(CancellationToken.None);
         var repository = new GenreRepository(dbContext);
         var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
@@ -643,14 +643,129 @@ public class GenreRepositoryTest
 
 
         var output = await repository.Search(searchInput, CancellationToken.None);
-        var expectedOrderedList = this.fixture.CloneGenresListOrdered(examplegenresList, orderBy, searchOrder);
+        var expectedOrderedList = this.fixture.CloneGenresListOrdered(exampleGenresList, orderBy, searchOrder);
 
         output.Should().NotBeNull();
-        output.Total.Should().Be(examplegenresList.Count);
-        output.Items.Should().HaveCount(examplegenresList.Count);
+        output.Total.Should().Be(exampleGenresList.Count);
+        output.Items.Should().HaveCount(exampleGenresList.Count);
         output.Items.Should().BeEquivalentTo(expectedOrderedList, options => options.WithStrictOrdering());
         output.CurrentPage.Should().Be(searchInput.Page);
         output.PerPage.Should().Be(searchInput.PerPage);
+
+    }
+
+    [Fact(DisplayName = nameof(GetIdsListByIds))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task GetIdsListByIds()
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleGenresList = this.fixture.GetExampleGenresList(10);
+        await dbContext.AddRangeAsync(exampleGenresList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new GenreRepository(actDbContext);
+        var idsToGet = exampleGenresList.Select(x => x.Id).Take(2).ToList();
+
+        var result = await repository.GetIdsByIds(idsToGet, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(idsToGet.Count);
+        result.ToList().Should().BeEquivalentTo(idsToGet);
+
+    }
+
+    [Fact(DisplayName = nameof(GetIdsListByIdsWhenOnlyThreeIdsMatch))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task GetIdsListByIdsWhenOnlyThreeIdsMatch()
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleGenresList = this.fixture.GetExampleGenresList(10);
+        await dbContext.AddRangeAsync(exampleGenresList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new GenreRepository(actDbContext);
+        var idsToGet = exampleGenresList.Select(x => x.Id)
+            .Take(3)
+            .Concat(new []{Guid.NewGuid(), Guid.NewGuid(), })
+            .ToList();
+
+        var result = await repository.GetIdsByIds(idsToGet, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(3);
+        result.ToList().Should().NotBeEquivalentTo(idsToGet);
+        idsToGet.Should().Contain(result);
+
+    }
+
+    [Fact(DisplayName = nameof(GetListByIds))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task GetListByIds()
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleGenresList = this.fixture.GetExampleGenresList(10);
+        await dbContext.AddRangeAsync(exampleGenresList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new GenreRepository(actDbContext);
+        var idsToGet = exampleGenresList.Select(x => x.Id)
+            .Take(3)
+            .ToList();
+
+        var result = await repository.GetListByIds(idsToGet, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(idsToGet.Count);
+        idsToGet.ForEach(id =>
+        {
+            var example = exampleGenresList.Find(x => x.Id == id);
+            var resultItem = result.FirstOrDefault(x => x.Id == id);
+            example.Should().NotBeNull();
+            resultItem.Should().NotBeNull();
+            resultItem.Name.Should().Be(example.Name);
+            resultItem.Id.Should().Be(example.Id);
+            resultItem.IsActive.Should().Be(example.IsActive);
+
+        });
+
+    }
+
+    [Fact(DisplayName = nameof(GetListByIdsWhenOnlyThreeIdsMatch))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task GetListByIdsWhenOnlyThreeIdsMatch()
+    {
+        var dbContext = this.fixture.CreateDbContext();
+        var exampleGenresList = this.fixture.GetExampleGenresList(10);
+        await dbContext.AddRangeAsync(exampleGenresList);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
+
+        var actDbContext = this.fixture.CreateDbContext(true);
+        var repository = new GenreRepository(actDbContext);
+        var idsToGet = exampleGenresList.Select(x => x.Id)
+            .Take(3)
+            .Concat(new []{Guid.NewGuid(), Guid.NewGuid(), })
+            .ToList();
+
+        var idsExpectedToGet = idsToGet.Take(3).ToList();
+
+        var result = await repository.GetListByIds(idsToGet, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(3);
+        idsExpectedToGet.ForEach(id =>
+        {
+            var example = exampleGenresList.Find(x => x.Id == id);
+            var resultItem = result.FirstOrDefault(x => x.Id == id);
+            example.Should().NotBeNull();
+            resultItem.Should().NotBeNull();
+            resultItem.Name.Should().Be(example.Name);
+            resultItem.Id.Should().Be(example.Id);
+            resultItem.IsActive.Should().Be(example.IsActive);
+
+        });
 
     }
 }

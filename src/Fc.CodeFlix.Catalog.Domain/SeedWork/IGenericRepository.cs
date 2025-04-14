@@ -10,7 +10,7 @@ public interface IGenericRepository<TAggregate> : IRepository where TAggregate :
 {
     public Task Insert(TAggregate video, CancellationToken cancellationToken);
     public Task<TAggregate> Get(Guid id, CancellationToken cancellationToken);
-    public Task Delete(TAggregate aggregate, CancellationToken cancellationToken);
-    public Task Update(TAggregate aggregate, CancellationToken cancellationToken);
+    public Task Delete(TAggregate video, CancellationToken cancellationToken);
+    public Task Update(TAggregate video, CancellationToken cancellationToken);
 
 }

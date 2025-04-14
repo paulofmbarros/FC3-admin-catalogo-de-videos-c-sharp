@@ -9,11 +9,14 @@ namespace FC.CodeFlix.Catalog.IntegrationTests.Application.UseCases.Genre.Delete
 using Catalog.Infra.Data.EF;
 using Catalog.Infra.Data.EF.Models;
 using Catalog.Infra.Data.EF.Repositories;
+using Fc.CodeFlix.Catalog.Application;
 using Fc.CodeFlix.Catalog.Application.Exceptions;
 using Fc.CodeFlix.Catalog.Application.UseCases.Genre.DeleteGenre;
 using Fc.CodeFlix.Catalog.Application.UseCases.Genre.GetGenre;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 [Collection(nameof(DeleteGenreTestFixture))]
 public class DeleteGenreTests
@@ -40,7 +43,11 @@ public class DeleteGenreTests
         var actDbContext = this.fixture.CreateDbContext(true);
         var genreRepository = new GenreRepository(actDbContext);
 
-        var unitOfWork = new UnitOfWork(actDbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(actDbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         var useCase = new DeleteGenre(genreRepository, unitOfWork);
 
@@ -68,7 +75,11 @@ public class DeleteGenreTests
 
         var actDbContext = this.fixture.CreateDbContext(true);
         var genreRepository = new GenreRepository(actDbContext);
-        var unitOfWork = new UnitOfWork(actDbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(actDbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
         var useCase = new DeleteGenre(genreRepository, unitOfWork);
         var randomId = Guid.NewGuid();
 
@@ -99,8 +110,11 @@ public class DeleteGenreTests
 
         var actDbContext = this.fixture.CreateDbContext(true);
         var genreRepository = new GenreRepository(actDbContext);
-
-        var unitOfWork = new UnitOfWork(actDbContext);
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddLogging();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var eventPublisher = new DomainEventPublisher(serviceProvider);
+        var unitOfWork = new UnitOfWork(actDbContext, eventPublisher, serviceProvider.GetService<ILogger<UnitOfWork>>());
 
         var useCase = new DeleteGenre(genreRepository, unitOfWork);
 

@@ -12,5 +12,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public class GenreConfiguration : IEntityTypeConfiguration<Genre>
 {
-    public void Configure(EntityTypeBuilder<Genre> builder) => builder.HasKey(genre => genre.Id);
+    public void Configure(EntityTypeBuilder<Genre> builder)
+    {
+        builder.HasKey(genre => genre.Id);
+        builder.Ignore(genre => genre.Events);
+    }
 }
