@@ -20,7 +20,6 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
@@ -36,6 +35,7 @@
       <ProjectReference Include="..\Fc.CodeFlix.Catalog.Application\Fc.CodeFlix.Catalog.Application.csproj" />
       <ProjectReference Include="..\FC.CodeFlix.Catalog.Infra.Data.EF\FC.CodeFlix.Catalog.Infra.Data.EF.csproj" />
       <ProjectReference Include="..\FC.CodeFlix.Catalog.Infra.Messaging\FC.CodeFlix.Catalog.Infra.Messaging.csproj" />
+      <ProjectReference Include="..\Fc.CodeFlix.Catalog.Infra.Storage\Fc.CodeFlix.Catalog.Infra.Storage.csproj" />
     </ItemGroup>
 
 
